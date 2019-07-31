@@ -1,2 +1,2 @@
-# Reusable Bundle Template
-Reusable bundle oluşturmak için template yapısı
+# Netliva Symfony Form Bundle
+Symfony için kullanılabilecek form tipleri
