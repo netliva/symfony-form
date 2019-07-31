@@ -1,11 +1,11 @@
 {
-	"name": "netliva/reusable-template",
+	"name": "netliva/symfony-form",
 	"license": "MIT",
 	"type": "library",
-	"description": "Netliva Xxx Library",
+	"description": "Netliva Symfony Form Bundle",
 	"autoload": {
 		"psr-4": {
-			"Netliva\\XxxBundle\\": "src/"
+			"Netliva\\SymfonyFormBundle\\": "src/"
 		}
 	},
 	"require": {
