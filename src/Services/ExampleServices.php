@@ -1,6 +1,6 @@
 <?php
 
-namespace Netliva\XxxBundle\Services;
+namespace Netliva\SymfonyFormBundle\Services;
 
 
 class ExampleServices extends \Twig_Extension
