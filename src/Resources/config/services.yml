@@ -1,10 +1,8 @@
 services:
-    Netliva\SymfonyFormBundle\Services\ExampleServices:
+    Netliva\SymfonyFormBundle\Services\FormErrorsService:
+        class: Netliva\SymfonyFormBundle\Services\FormErrorsService
         public: false
-        arguments: ["@doctrine.orm.entity_manager"]
-        tags:
-            - { name: twig.extension }
 
-    netliva.example:
-        alias: Netliva\SymfonyFormBundle\Services\ExampleServices
+    netliva.form_errors:
+        alias: Netliva\SymfonyFormBundle\Services\FormErrorsService
         public: true
