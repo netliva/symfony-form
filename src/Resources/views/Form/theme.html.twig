@@ -1,0 +1,16 @@
+
+{% block netliva_ajax_submit_widget %}
+
+	{{ form_widget(form) }}
+
+	<script type="text/javascript">
+		var button = document.getElementById("{{ form.vars.id }}");
+		button.setAttribute('type', 'submit');
+		form = document.getElementsByName("{{ form.parent.vars.id }}");
+		form[0].classList.add("be_ajax_form");
+		if (typeof ajaxFormCreate == 'function') {
+			ajaxFormCreate();
+		}
+	</script>
+
+{% endblock %}
