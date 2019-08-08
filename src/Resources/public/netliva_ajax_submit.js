@@ -26,8 +26,8 @@
 			{
 				$form.before(
 					'<div class="alert alert-success" role="alert">'+
-					'<h4 class="alert-heading">'+(response.message !== undefined && response.message.title !== undefined?response.message.title:doneText)+'</h4>'+
-					'<p>'+(response.message !== undefined && response.message.content !== undefined ? response.message.content:doneText)+'</p>'+
+					'<h4 class="alert-heading">'+(response.message !== undefined && response.message.title !== undefined?response.message.title:'İşlem Başarılı')+'</h4>'+
+					'<p>'+(response.message !== undefined && response.message.content !== undefined ? response.message.content:'İşleminiz Başarıyla Gerçekleştirildi')+'</p>'+
 					'</div>'
 				);
 				if(response.removeForm === false)
