@@ -14,26 +14,16 @@
 		$form.find(".form-control-feedback").remove();
 		if (response.situ === 'success')
 		{
-			if(response.alert !== undefined)
+
+			$form.before(
+				'<div class="alert alert-success" role="alert">'+
+				'<h4 class="alert-heading">'+(response.message !== undefined && response.message.title !== undefined?response.message.title:'İşlem Tamam')+'</h4>'+
+				'<p>'+(response.message !== undefined && response.message.content !== undefined ? response.message.content:'İşleminiz başarıyla gerçekleştirildi')+'</p>'+
+				'</div>'
+			);
+			if(response.removeForm === false)
 			{
-				responseAlert(response.alert.title, response.alert.text, response.alert.type, response.alert.closeTime ? response.alert.closeTime:2500 ,response.alert.refresh ? response.alert.refresh : false);
-				if (response.hideElem)
-				{
-					$('#'+response.hideElem).hide();
-				}
-			}
-			else
-			{
-				$form.before(
-					'<div class="alert alert-success" role="alert">'+
-					'<h4 class="alert-heading">'+(response.message !== undefined && response.message.title !== undefined?response.message.title:'İşlem Başarılı')+'</h4>'+
-					'<p>'+(response.message !== undefined && response.message.content !== undefined ? response.message.content:'İşleminiz Başarıyla Gerçekleştirildi')+'</p>'+
-					'</div>'
-				);
-				if(response.removeForm === false)
-				{
-					$(".alert").slideUp(1000);
-				}
+				$(".alert").slideUp(1000);
 			}
 
 			if(response.removeForm !== false)
