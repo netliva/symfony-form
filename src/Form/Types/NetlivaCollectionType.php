@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: msthzn
- * Date: 21.07.2018
- * Time: 10:17
- */
 
-namespace App\Form\TypeExtension;
+namespace Netliva\SymfonyFormBundle\Form\Types;
 
 
 use Symfony\Component\Form\AbstractType;
