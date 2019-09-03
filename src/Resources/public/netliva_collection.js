@@ -73,9 +73,6 @@
 			{
 				['window.'+$formId+'_collect_function']($addedElement, source);
 			}
-			$addedElement.find('.bs-datepicker').datepicker({
-				format: 'dd-mm-yyyy'
-			});
 		}
 		$('#collection_type_'+$formId).collection({addBtnText:addButtonText, prototypeName:$pname, delBtnText:'<i class="fa fa-times"></i>', afterAction:afterAddItem});
 		$("#collection_type_"+$formId+" li:not(.addCollBtn)").each(function () { afterAddItem($(this),"still"); });
