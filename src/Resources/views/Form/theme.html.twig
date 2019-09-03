@@ -1,3 +1,30 @@
+{% block collection_type_widget %}
+
+	<ul id="collection_type_{{form.vars.id}}" class="collection_type list-unstyled list-group" data-prototype="{{ form_widget(form.vars.prototype)|e }}">
+		{% for item in form	%}
+			<li class="list-group-item" data-index="{{item.vars.name}}">
+				{% spaceless %}
+					{{ form_widget(item) }}
+				{% endspaceless %}
+			</li>
+		{% endfor %}
+	</ul>
+
+	<script type="text/javascript">
+		window.addEventListener("load", function () {
+			collectionPrepeare('{{ form.vars.id }}', '{{ prototype_name }}');
+		});
+	</script>
+	<style type="text/css">
+		#fg_{{form.vars.id}} > div { width: 100%; flex: 0 0 100%; max-width: 100%; }
+		#fg_{{form.vars.id}} > legend { background:white; margin: 0 0 -10px 20px; padding: 0 6px; position: relative; width: auto; z-index: 10; }
+		.collection_type .btn.btn-danger { position: absolute; top: 20px; display:none; }
+		.collection_type li:hover .btn.btn-danger { display: block; }
+		.collection_type li:hover { background-color: rgba(0, 0, 0, 0.02); }
+	</style>
+
+
+{% endblock %}
 
 {% block netliva_ajax_submit_widget %}
 
