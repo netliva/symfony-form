@@ -10,8 +10,8 @@
 	};
 
 	window.ajaxFormSuccess = function (response, statusText, xhr, $form) {
-		$(".has-error").removeClass("has-error has-danger");
-		$form.find(".form-control-feedback").remove();
+		$(".form-control").removeClass("is-invalid is-valid");
+		$form.find(".invalid-feedback").remove();
 		if (response.situ === 'success')
 		{
 
@@ -51,20 +51,19 @@
 			}
 			else
 			{
+				$form.find(".form-control").each(function () {
+					$(this).addClass("is-valid");
+				});
 				$.each(response.errors, function(name, err) {
-					let errorsText = '<div class="help-block form-text with-errors form-control-feedback">' +
-						'<ul class="list-unstyled">';
-
+					let errorsText = '<ul class="invalid-feedback list-unstyled">';
 					$.each(err, function(n, errorText) {
 						errorsText += "<li>"+errorText+"</li>";
 					});
-					errorsText += "</ul></div>";
-					$lineElement = $("#fg_"+name);
-					if (!$lineElement.length)
-						$lineElement = $("#"+name).parent();
-					$lineElement
-						.addClass("has-error has-danger")
-						.find(".form-control").after(errorsText);
+					errorsText += "</ul>";
+					$("#"+name)
+						.removeClass("is-valid")
+						.addClass("is-invalid")
+						.after(errorsText);
 				});
 			}
 
