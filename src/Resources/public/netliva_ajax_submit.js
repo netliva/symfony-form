@@ -59,7 +59,10 @@
 						errorsText += "<li>"+errorText+"</li>";
 					});
 					errorsText += "</ul></div>";
-					$("#fg_"+name)
+					$lineElement = $("#fg_"+name);
+					if (!$lineElement.length)
+						$lineElement = $("#"+name).parent();
+					$lineElement
 						.addClass("has-error has-danger")
 						.find(".form-control").after(errorsText);
 				});
