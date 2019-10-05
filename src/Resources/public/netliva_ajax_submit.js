@@ -2,9 +2,12 @@
 
 	window.ajaxFormCreate = function()
 	{
-		$(".be_ajax_form").ajaxForm({
-			dataType: 'json',
-			success:ajaxFormSuccess
+		$(".be_ajax_form").each(function() {
+			$(this).ajaxForm({
+				dataType: 'json',
+				success:ajaxFormSuccess,
+				type: $(this).attr("method")
+			});
 		});
 		$(".be_ajax_form").removeClass("be_ajax_form").addClass("ajax_form");
 	};
