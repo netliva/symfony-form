@@ -15,11 +15,13 @@ class NetlivaCollectionType extends AbstractType
 	public function buildView (FormView $view, FormInterface $form, array $options)
 	{
 		$view->vars['prototype_name'] = $options['prototype_name'];
+		$view->vars['js_settings'] = json_encode($options['js_settings']);
 	}
 
 	public function configureOptions (OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
+			'js_settings'	=> [],
 			'prototype'		=> true,
 			'allow_add'		=> true,
 			'allow_delete'	=> true,

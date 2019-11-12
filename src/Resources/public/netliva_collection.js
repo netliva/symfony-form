@@ -11,13 +11,13 @@
 		let $newFormLi = $('<li></li>').append(newForm);
 		$newFormLi.data('index',index);
 		if ($collectionHolder.hasClass('list-group')) $newFormLi.addClass('list-group-item');
-		addDeleteLinkCollection($newFormLi, settings.delBtnText);
+		addDeleteLinkCollection($newFormLi, settings);
 		$newBtn.before($newFormLi);
 		return $newFormLi;
 	};
 
-	window.addDeleteLinkCollection = function($tagFormLi, btnText) {
-		let $removeFormA = $('<a class="btn btn-danger" href="#">'+btnText+'</a>');
+	window.addDeleteLinkCollection = function($tagFormLi, setting) {
+		let $removeFormA = $('<a class="'+setting.delBtnClass+' ntlcol-delete-button" href="#">'+setting.delBtnText+'</a>');
 		$tagFormLi.append($removeFormA);
 
 		$removeFormA.on('click', function(e) {
@@ -36,13 +36,20 @@
 
 	$.fn.collection = function(settings)
 	{
-		settings = $.extend({ addBtnText:addButtonText, prototypeName:'__name__', delBtnText:delButtonText, afterAction:function(){} }, settings);
+		settings = $.extend({
+			prototypeName:'__name__',
+			addBtnText:'Ekle',
+			addBtnClass:'btn btn-success',
+			delBtnText:'Sil',
+			delBtnClass:'btn btn-danger',
+			afterAction:function(){}
+		}, settings);
 
 		let $collectionHolder = this;
-		let $addTagLink = $('<a class="btn btn-success" href="#" class="addCollectionLink">'+settings.addBtnText+'</a>');
+		let $addTagLink = $('<a class="'+settings.addBtnClass+' ntlcol-add-button" href="#" class="addCollectionLink">'+settings.addBtnText+'</a>');
 		let $newBtn = $('<li class="addCollBtn text-center"></li>').append($addTagLink);
 
-		$collectionHolder.find('>li').each(function() { addDeleteLinkCollection($(this), settings.delBtnText); });
+		$collectionHolder.find('>li').each(function() { addDeleteLinkCollection($(this), settings); });
 
 		if ($collectionHolder.hasClass('list-group')) $newBtn.addClass('list-group-item');
 
@@ -54,7 +61,8 @@
 
 		$collectionHolder.append($newBtn);
 
-		$addTagLink.on('click', function(e) {
+		$addTagLink.on('click', function(e)
+		{
 			// prevent the link from creating a "#" on the URL
 			e.preventDefault();
 
@@ -66,7 +74,8 @@
 
 	};
 
-	window.collectionPrepeare = function ($formId, $pname) {
+	window.collectionPrepeare = function ($formId, $pname, settings)
+	{
 		function afterAddItem($addedElement, source)
 		{
 			if (typeof ['window.'+$formId+'_collect_function'] === 'function')
@@ -74,8 +83,16 @@
 				['window.'+$formId+'_collect_function']($addedElement, source);
 			}
 		}
-		$('#collection_type_'+$formId).collection({addBtnText:addButtonText, prototypeName:$pname, delBtnText:'<i class="fa fa-times"></i>', afterAction:afterAddItem});
+
+		settings = $.extend({
+			addBtnText:'Ekle',
+			prototypeName:$pname,
+			delBtnText:'<i class="fa fa-times"></i>',
+			afterAction: afterAddItem
+		}, settings);
+
+		$('#collection_type_'+$formId).collection(settings);
 		$("#collection_type_"+$formId+" li:not(.addCollBtn)").each(function () { afterAddItem($(this),"still"); });
 	};
-	
+
 })(jQuery, window);
