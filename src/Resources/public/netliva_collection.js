@@ -22,15 +22,25 @@
 
 		$removeFormA.on('click', function(e) {
 			e.preventDefault();
-			myDialogBox({
-				id:'ForDelete',
-				title: deleteConfirmTitle,
-				content: deleteConfirmText,
-				buttons : [
-					{label: confirmButtonText, class:'danger', action:function(e) { $('#generalDialogBoxForDelete').modal('hide'); $tagFormLi.remove(); }},
-					{label: cancelButtonText, action:'close', class:'info'}
-				],
-			});
+			if (typeof myDialogBox !== 'undefined')
+			{
+				myDialogBox({
+					id:'ForDelete',
+					title: setting.deleteConfirmTitle,
+					content: setting.deleteConfirmText,
+					buttons : [
+						{label: confirmButtonText, class:'danger', action:function(e) { $('#generalDialogBoxForDelete').modal('hide'); $tagFormLi.remove(); }},
+						{label: cancelButtonText, action:'close', class:'info'}
+					],
+				});
+			}
+			else
+			{
+				if(confirm(setting.deleteConfirmText))
+				{
+					$tagFormLi.remove();
+				}
+			}
 		});
 	};
 
@@ -42,6 +52,8 @@
 			addBtnClass:'btn btn-success',
 			delBtnText:'Sil',
 			delBtnClass:'btn btn-danger',
+			deleteConfirmTitle:'Silme Onayı',
+			deleteConfirmText:'İlgili kaydı silmek istediğinizden emin misiniz?',
 			afterAction:function(){}
 		}, settings);
 
