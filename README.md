@@ -186,6 +186,16 @@ yada encore kullanarak projeye dahil edebilirsiniz;
 // assets/js/app.js
 require('../../public/bundles/netlivasymfonyform/netliva_dependent');
 ```
+Route tanımlamasını yapınız
+
+```yaml
+# ./config/routes.yaml
+netliva_form_route:
+  resource: '@NetlivaSymfonyFormBundle/Resources/config/routing.yml'
+  prefix: /
+
+```
+
 Aşağıdaki gibi bağımlılık tanımlanabilir. Burada Kullanıcılar, bir üsteki gruplara göre bağlı olarak listelenmektedir. Gruplar Choice olabilieceği gibi veritabanından gelen EntityType'ta oalbilir
 ```php
 <?php
