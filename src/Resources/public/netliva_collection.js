@@ -90,9 +90,9 @@
 	{
 		function afterAddItem($addedElement, source)
 		{
-			if (typeof ['window.'+$formId+'_collect_function'] === 'function')
+			if (typeof window[$formId+'_collect_function'] === 'function')
 			{
-				['window.'+$formId+'_collect_function']($addedElement, source);
+				window[$formId+'_collect_function']($addedElement, source);
 			}
 		}
 
