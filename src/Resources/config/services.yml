@@ -1,4 +1,9 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     Netliva\SymfonyFormBundle\Services\FormErrorsService:
         class: Netliva\SymfonyFormBundle\Services\FormErrorsService
         public: false
@@ -6,3 +11,7 @@ services:
     netliva.form_errors:
         alias: Netliva\SymfonyFormBundle\Services\FormErrorsService
         public: true
+
+
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaDependentType:
+        autowire: true

@@ -42,3 +42,45 @@
 	</script>
 
 {% endblock %}
+
+
+{% block netliva_dependent_widget %}
+	{% set depend_to_id = null %}
+	{% if form.parent.children[depend_to] is defined %}
+		{% set depend_to_id = form.parent.children[depend_to].vars.id %}
+	{% elseif form.parent.parent.children[depend_to] is defined %}
+		{% set depend_to_id = form.parent.parent.children[depend_to].vars.id %}
+	{% elseif form.parent.parent.parent.children[depend_to] is defined %}
+		{% set depend_to_id = form.parent.parent.parent.children[depend_to].vars.id %}
+	{% endif %}
+
+	{% if not depend_to_id %}
+		<em>Bağlı Form Elemanı Bulunamadı.</em>
+	{% else %}
+
+
+		{% set expanded = false %}
+		{% set placeholder = default %}
+		{% set multiple = false %}
+		{% set preferred_choices = {} %}
+		{% set choices = {} %}
+		{% set attr = {disabled:true} %}
+
+		{{- block('choice_widget') -}}
+
+
+		<script type="text/javascript">
+			window.addEventListener("load", function () {
+				netlivaDependentPrepeare(
+					'{{ form.vars.id }}',
+					'{{ depend_to_id }}',
+					{
+						value: '{{ value }}',
+						default: '{{ default }}',
+						option_path: "{{ path('netliva_form_dependent_get_class', {"entity_alias":entity_alias}) }}",
+					}
+				);
+			});
+		</script>
+	{% endif %}
+{% endblock %}

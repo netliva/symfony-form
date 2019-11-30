@@ -20,10 +20,54 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('netliva_symfony_form');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
 
+		$rootNode
+			->children()
+				->arrayNode('dependent_entities')
+                    ->useAttributeAsKey('id')
+                    ->prototype('array')
+						->isRequired()
+                        ->children()
+							->arrayNode('static_values')
+								->prototype('scalar')->end()
+							->end()
+							->arrayNode('join')
+								->prototype('scalar')->end()
+							->end()
+                            ->scalarNode('static_only_show_with_results')
+                                ->defaultValue(false)
+                                ->cannotBeEmpty()
+                            ->end()
+                            ->scalarNode('em')
+                                ->defaultValue('default')
+                                ->cannotBeEmpty()
+                            ->end()
+                            ->scalarNode('class')
+                                ->cannotBeEmpty()
+								->isRequired()
+                            ->end()
+                            ->scalarNode('key')
+                                ->defaultValue('id')
+                                ->cannotBeEmpty()
+                            ->end()
+							->arrayNode('value')
+								->isRequired()
+								->prototype('scalar')->end()
+								->cannotBeEmpty()
+							->end()
+                            ->scalarNode('where')
+                                ->cannotBeEmpty()
+								->isRequired()
+                            ->end()
+							->arrayNode('other_values')->prototype('scalar')->end()->end()
+                            ->scalarNode('role')
+                                ->defaultValue('IS_AUTHENTICATED_ANONYMOUSLY')
+                                ->cannotBeEmpty()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+			->end();
         return $treeBuilder;
     }
 }

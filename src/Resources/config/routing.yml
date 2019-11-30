@@ -1,0 +1,3 @@
+netliva_form_dependent_get_class:
+  path:     /netliva/form/dependent/{entity_alias}
+  defaults: { _controller: NetlivaSymfonyFormBundle:Dependent:getOptions }
