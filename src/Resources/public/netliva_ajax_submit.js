@@ -7,9 +7,8 @@
 				dataType: 'json',
 				success:ajaxFormSuccess,
 				type: $(this).attr("method")
-			});
+			}).removeClass("be_ajax_form").addClass("ajax_form");
 		});
-		$(".be_ajax_form").removeClass("be_ajax_form").addClass("ajax_form");
 	};
 
 	window.ajaxFormSuccess = function (response, statusText, xhr, $form) {

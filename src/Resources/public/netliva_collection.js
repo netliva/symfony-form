@@ -86,25 +86,31 @@
 
 	};
 
-	window.collectionPrepeare = function ($formId, $pname, settings)
+	window.createNetlivaCollection = function()
 	{
-		function afterAddItem($addedElement, source)
-		{
-			if (typeof window[$formId+'_collect_function'] === 'function')
+		$(".be_netliva_collection_type").each(function() {
+			function afterAddItem($addedElement, source)
 			{
-				window[$formId+'_collect_function']($addedElement, source);
+				if (typeof window[$(this).data("formId")+'_collect_function'] === 'function')
+				{
+					window[$(this).data("formId")+'_collect_function']($addedElement, source);
+				}
 			}
-		}
 
-		settings = $.extend({
-			addBtnText:'Ekle',
-			prototypeName:$pname,
-			delBtnText:'<i class="fa fa-times"></i>',
-			afterAction: afterAddItem
-		}, settings);
+			settings = $.extend({
+				addBtnText:'Ekle',
+				prototypeName:$(this).data("prototypeName"),
+				delBtnText:'<i class="fa fa-times"></i>',
+				afterAction: afterAddItem
+			}, $(this).data("jsSettings"));
 
-		$('#collection_type_'+$formId).collection(settings);
-		$("#collection_type_"+$formId+" li:not(.addCollBtn)").each(function () { afterAddItem($(this),"still"); });
+			$(this).collection(settings);
+			$(this).find("li:not(.addCollBtn)").each(function () { afterAddItem($(this),"still"); });
+			$(this).removeClass("be_netliva_collection_type");
+		});
 	};
 
 })(jQuery, window);
+
+$(document).ajaxComplete(createNetlivaCollection);
+jQuery(createNetlivaCollection);

@@ -1,6 +1,13 @@
 {% block collection_type_widget %}
 
-	<ul id="collection_type_{{form.vars.id}}" class="collection_type list-unstyled list-group" data-prototype="{{ form_widget(form.vars.prototype)|e }}">
+	<ul
+		id="collection_type_{{form.vars.id}}"
+		class="collection_type be_netliva_collection_type list-unstyled list-group"
+		data-form-id="{{form.vars.id}}"
+		data-prototype-name="{{ prototype_name }}"
+		data-js-settings="{{ js_settings|raw }}"
+		data-prototype="{{ form_widget(form.vars.prototype)|e }}"
+	>
 		{% for item in form	%}
 			<li class="list-group-item" data-index="{{item.vars.name}}">
 				{% spaceless %}
@@ -10,11 +17,6 @@
 		{% endfor %}
 	</ul>
 
-	<script type="text/javascript">
-		window.addEventListener("load", function () {
-			collectionPrepeare('{{ form.vars.id }}', '{{ prototype_name }}', {{ js_settings|raw }});
-		});
-	</script>
 	<style type="text/css">
 		#fg_{{form.vars.id}} > div { width: 100%; flex: 0 0 100%; max-width: 100%; }
 		#fg_{{form.vars.id}} > legend { background:white; margin: 0 0 -10px 20px; padding: 0 6px; position: relative; width: auto; z-index: 10; }
