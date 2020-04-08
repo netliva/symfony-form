@@ -1,7 +1,7 @@
 {
 	"name": "netliva/symfony-form",
 	"license": "MIT",
-	"type": "library",
+	"type": "symfony-bundle",
 	"description": "Netliva Symfony Form Bundle",
 	"autoload": {
 		"psr-4": {
