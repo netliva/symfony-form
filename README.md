@@ -191,7 +191,7 @@ Route tanımlamasını yapınız
 ```yaml
 # ./config/routes.yaml
 netliva_form_route:
-  resource: '@NetlivaSymfonyFormBundle/Resources/config/routing.yml'
+  resource: '@NetlivaSymfonyFormBundle/Resources/config/routing.yaml'
   prefix: /
 
 ```

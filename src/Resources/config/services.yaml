@@ -12,6 +12,11 @@ services:
         alias: Netliva\SymfonyFormBundle\Services\FormErrorsService
         public: true
 
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaAutocompleteType:
+        autowire: true
+
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaDatePickerType:
+        autowire: true
 
     Netliva\SymfonyFormBundle\Form\Types\NetlivaDependentType:
         autowire: true

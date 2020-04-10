@@ -1,0 +1,11 @@
+netliva_symfony_form_dependent:
+  path:     /netliva/form/dependent/{entity_alias}
+  defaults: { _controller: NetlivaSymfonyFormBundle:Dependent:getOptions }
+
+netliva_symfony_form_autocomplate:
+  path:     /netliva/form/autocomplate/{entity_alias}
+  defaults: { _controller: NetlivaSymfonyFormBundle:AjaxAutocomplete:getJSON }
+
+netliva_symfony_form_autocomplate_back:
+  path:     /netliva/form/autocomplate_back/{entity_alias}/{id}
+  defaults: { _controller: NetlivaSymfonyFormBundle:AjaxAutocomplete:callBack, id: null }

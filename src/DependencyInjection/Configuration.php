@@ -23,6 +23,8 @@ class Configuration implements ConfigurationInterface
 
 		$rootNode
 			->children()
+
+				/* ==== BAĞIMLI ALANLAR ==== */
 				->arrayNode('dependent_entities')
                     ->useAttributeAsKey('id')
                     ->prototype('array')
@@ -67,6 +69,48 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+
+				/* ==== AJAX AUTO COMPLATE ==== */
+				->arrayNode('autocomplete_entities')
+                    ->useAttributeAsKey('id')
+                    ->prototype('array')
+						->prototype('array')
+							->children()
+								->scalarNode('em')
+									->defaultValue('default')
+								->end()
+								->scalarNode('format')
+									->defaultValue(null)
+								->end()
+								->scalarNode('template')
+									->defaultValue(null)
+								->end()
+								->arrayNode('join')
+									->prototype('scalar')->end()
+								->end()
+								->scalarNode('class')
+								->end()
+								->scalarNode('key')
+									->defaultValue('id')
+								->end()
+								->arrayNode('value')
+									->prototype('scalar')->end()
+								->end()
+								->scalarNode('search')
+									->defaultValue('explode_space')
+								->end()
+								->scalarNode('role')
+									->defaultValue('IS_AUTHENTICATED_ANONYMOUSLY')
+								->end()
+								->arrayNode('other_values')->prototype('scalar')->end()->end()
+								->scalarNode('search_in_other_values')
+									->defaultValue(true)
+								->end()
+							->end()
+						->end()
+                    ->end()
+                ->end()
+
 			->end();
         return $treeBuilder;
     }
