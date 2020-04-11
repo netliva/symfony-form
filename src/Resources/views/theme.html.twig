@@ -105,16 +105,18 @@
 		<div class="typeahead__field">
 			<div class="typeahead__query">
 				<input
-					id="{{ form.vars.id }}_helper"
-					name="{{ form.vars.id }}_helper" {{ block('widget_attributes') }}
-					autocomplete="off"
-					netliva_autocomplete_widget
-					data-element="#{{ form.vars.id }}"
-					data-multiselect="{{ multiselect }}"
-					data-multiselect-limit="{{ multiselect_limit }}"
-					data-config="{{ entity_config|json_encode }}"
-					data-autocomplate-url="{{ path('netliva_symfony_form_autocomplate', {"entity_alias":entity_alias}) }}"
-					data-autocomplate-back-url="{{ val_id ? path('netliva_symfony_form_autocomplate_back', {"entity_alias":entity_alias, "id":val_id }) }}"
+					{% with {attr: attr|merge({
+					"id":form.vars.id~"_helper",
+					"name":form.vars.id~"_helper",
+					"autocomplete":"off",
+					"netliva_autocomplete_widget":"",
+					"data-element":"#"~form.vars.id,
+					"data-multiselect":multiselect,
+					"data-multiselect-limit":multiselect_limit,
+					"data-config":entity_config|json_encode,
+					"data-autocomplate-url":path('netliva_symfony_form_autocomplate', {"entity_alias":entity_alias}),
+					"data-autocomplate-back-url": val_id ? path('netliva_symfony_form_autocomplate_back', {"entity_alias":entity_alias, "id":val_id }),
+					})} %}{{ block('attributes') }}{% endwith %}
 				/>
 			</div>
 		</div>
@@ -126,13 +128,18 @@
 
 
 {% block netliva_datepicker_widget %}
+
+
 	<input {{ block('widget_attributes') }} type="hidden" value="{{ date }}" />
 	<input
-		id="{{ form.vars.id }}_helper"
-		name="{{ form.vars.id }}_helper" {{ block('widget_attributes') }}
-		netliva_datetimepicker_widget
-		data-element="#{{ form.vars.id }}"
-		data-view-format="{{view_format}}"
-		data-db-format="{{db_format}}"
+		{% with {attr: attr|merge({
+			"class": "form-control",
+			"id":form.vars.id~"_helper",
+			"name":form.vars.id~"_helper",
+			"netliva_datetimepicker_widget":"",
+			"data-element":"#"~form.vars.id,
+			"data-view-format":view_format,
+			"data-db-format":db_format
+		})} %}{{ block('attributes') }}{% endwith %}
 	/>
 {% endblock %}
