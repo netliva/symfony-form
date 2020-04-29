@@ -66,24 +66,17 @@
 		{% set multiple = false %}
 		{% set preferred_choices = {} %}
 		{% set choices = {} %}
-		{% set attr = {disabled:true} %}
+		{% set attr = {
+			"disabled"       : true,
+			"class"          : "be_netliva_dependent",
+			"data-depend-to" : depend_to_id,
+			"data-value"     : value,
+			"data-default"   : default,
+			"data-path"      : path('netliva_symfony_form_dependent', {"entity_alias":entity_alias})
+		} %}
 
 		{{- block('choice_widget') -}}
 
-
-		<script type="text/javascript">
-			window.addEventListener("load", function () {
-				netlivaDependentPrepeare(
-					'{{ form.vars.id }}',
-					'{{ depend_to_id }}',
-					{
-						value: '{{ value }}',
-						default: '{{ default }}',
-						option_path: "{{ path('netliva_symfony_form_dependent', {"entity_alias":entity_alias}) }}",
-					}
-				);
-			});
-		</script>
 	{% endif %}
 {% endblock %}
 
