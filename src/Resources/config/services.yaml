@@ -20,3 +20,6 @@ services:
 
     Netliva\SymfonyFormBundle\Form\Types\NetlivaDependentType:
         autowire: true
+
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaIconType:
+        autowire: true

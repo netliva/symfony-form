@@ -136,3 +136,15 @@
 		})} %}{{ block('attributes') }}{% endwith %}
 	/>
 {% endblock %}
+
+
+
+{% block netliva_icon_row %}
+	{% set row_attr = { "netliva_icon_field" : "prepare", class:"netliva_icon_field" } %}
+	{{ block('form_row') }}
+{% endblock %}
+{% block netliva_icon_widget %}
+	<i class="netliva-demo-icon {{ value }}" style="margin-top: 0;margin-bottom: 0;"></i>
+	<button type="button" class="btn btn-xs btn-info"><i class="fa fa-list-ul"></i> SEÇ</button>
+	<input {{ block('widget_attributes') }} type="hidden" value="{{ value }}" />
+{% endblock %}
