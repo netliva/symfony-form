@@ -148,3 +148,48 @@
 	<button type="button" class="btn btn-xs btn-info"><i class="fa fa-list-ul"></i> SEÇ</button>
 	<input {{ block('widget_attributes') }} type="hidden" value="{{ value }}" />
 {% endblock %}
+
+
+
+
+{% block netliva_treeselect_row %}
+	{% set row_attr = {
+		"netliva_treeselect" : "prepare",
+		"class"              :"netliva_treeselect_field",
+		"data-first-deep"    : first_deep,
+		"data-multiselect"   : multiselect,
+		"data-breakable"     : breakable,
+		"data-where"         : where|json_encode()|raw,
+		"data-value"         : value|json_encode()|raw,
+		"data-url"           : path("netliva_symfony_form_treeselect_getoption",{entity_alias:entity_alias, val:"__ID__"}) ,
+	} %}
+	{{ block('form_row') }}
+{% endblock %}
+
+{% block netliva_treeselect_widget %}
+
+	<input {% with {attr: attr|merge({
+		"class" : "netliva_treeselect_input",
+		"type"  : "hidden",
+		"value" : value ? (value.id is defined  ? value.id:value|json_encode()|raw)
+	})} %}{{ block('widget_attributes') }}{% endwith %} />
+
+	<div class="d-flex flex-column">
+		<div class="d-flex">
+			<select class="form-control">
+				<option value="0">Yükleniyor...</option>
+			</select>
+			<button class="btn btn-info netliva_treeselect_back_btn ml-2" style="display: none;"><i class="fa fa-backward"></i></button>
+		</div>
+		<div class="my-1">
+			<small class="netliva_treeselect_selected_text"></small>
+		</div>
+		{% if multiselect %}
+				<input class="netliva_treeselect_helper form-control" />
+		{% endif %}
+	</div>
+
+
+
+
+{% endblock %}

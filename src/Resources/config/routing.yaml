@@ -9,3 +9,7 @@ netliva_symfony_form_autocomplate:
 netliva_symfony_form_autocomplate_back:
   path:     /netliva/form/autocomplate_back/{entity_alias}/{id}
   defaults: { _controller: NetlivaSymfonyFormBundle:AjaxAutocomplete:callBack, id: null }
+
+netliva_symfony_form_treeselect_getoption:
+  path:     /netliva/form/treeselect/{entity_alias}/{val}
+  defaults: { _controller: NetlivaSymfonyFormBundle:TreeSelect:getOptions }

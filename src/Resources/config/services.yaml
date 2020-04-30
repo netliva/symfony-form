@@ -23,3 +23,6 @@ services:
 
     Netliva\SymfonyFormBundle\Form\Types\NetlivaIconType:
         autowire: true
+
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaTreeSelectType:
+        autowire: true
