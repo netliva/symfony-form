@@ -1,5 +1,4 @@
 {% block collection_type_widget %}
-
 	<ul
 		id="collection_type_{{form.vars.id}}"
 		class="collection_type be_netliva_collection_type list-unstyled list-group"
@@ -25,14 +24,10 @@
 		.collection_type li:not(.addCollBtn):hover { background-color: rgba(0, 0, 0, 0.02); }
 		.collection_type li.addCollBtn { text-align: center; }
 	</style>
-
-
 {% endblock %}
 
 {% block netliva_ajax_submit_widget %}
-
 	{{ form_widget(form) }}
-
 	<script type="text/javascript">
 		var button = document.getElementById("{{ form.vars.id }}");
 		button.setAttribute('type', 'submit');
@@ -42,7 +37,6 @@
 			ajaxFormCreate();
 		}
 	</script>
-
 {% endblock %}
 
 
@@ -114,15 +108,11 @@
 			</div>
 		</div>
 	</div>
-
-
 {% endblock %}
 
 
 
 {% block netliva_datepicker_widget %}
-
-
 	<input {{ block('widget_attributes') }} type="hidden" value="{{ date }}" />
 	<input
 		{% with {attr: attr|merge({
@@ -165,9 +155,7 @@
 	} %}
 	{{ block('form_row') }}
 {% endblock %}
-
 {% block netliva_treeselect_widget %}
-
 	<input {% with {attr: attr|merge({
 		"class" : "netliva_treeselect_input",
 		"type"  : "hidden",
@@ -188,16 +176,14 @@
 				<input class="netliva_treeselect_helper form-control" />
 		{% endif %}
 	</div>
-
-
-
 {% endblock %}
+
+
 
 {% block netliva_collection_contact_widget %}
 	<div class="netliva_collection_contact_area">
 		{{ form_widget(form) }}
 	</div>
-
 {% endblock %}
 {% block netliva_contact_widget %}
 	<div class="netliva_contact_type_area">
