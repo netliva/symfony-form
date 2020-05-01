@@ -1,3 +1,9 @@
+
+{% block collection_type_row %}
+	<div class="netliva_collection_container">
+		{{ form_row(form) }}
+	</div>
+{% endblock %}
 {% block collection_type_widget %}
 	<ul
 		id="collection_type_{{form.vars.id}}"
@@ -15,15 +21,6 @@
 			</li>
 		{% endfor %}
 	</ul>
-
-	<style type="text/css">
-		#fg_{{form.vars.id}} > div { width: 100%; flex: 0 0 100%; max-width: 100%; }
-		#fg_{{form.vars.id}} > legend { background:white; margin: 0 0 -10px 20px; padding: 0 6px; position: relative; width: auto; z-index: 10; flex: auto; max-width: fit-content; }
-		.collection_type .ntlcol-delete-button { position: absolute; top: 20px; display:none; }
-		.collection_type li:hover .ntlcol-delete-button { display: block; }
-		.collection_type li:not(.addCollBtn):hover { background-color: rgba(0, 0, 0, 0.02); }
-		.collection_type li.addCollBtn { text-align: center; }
-	</style>
 {% endblock %}
 
 {% block netliva_ajax_submit_widget %}
