@@ -191,5 +191,25 @@
 
 
 
+{% endblock %}
 
+{% block netliva_collection_contact_widget %}
+	<div class="netliva_collection_contact_area">
+		{{ form_widget(form) }}
+	</div>
+
+{% endblock %}
+{% block netliva_contact_widget %}
+	<div class="netliva_contact_type_area">
+		{{ form_widget(form.type, {'attr': {'class': 'form-control contactType'}}) }}
+		<button class="closeContactTypeBtn btn btn-warning"><i class="fa fa-times"></i></button>
+	</div>
+	<div class="netliva_contact_fields">
+		<button class="selectContactTypeBtn btn btn-info"><i class="fa fa-bell"></i></button>
+		{{ form_widget(form.content, {'attr': {'class': 'form-control contactContent'}}) }}
+		{{ form_widget(form.internal, {'attr': {'class': 'form-control contactInternal', 'placeholder':'dahili'}}) }}
+		<label class="notiLabel">
+			{{ form_widget(form.notification, {'attr': {'class': 'contactNotification input-switch-alt'}}) }}
+		</label>
+	</div>
 {% endblock %}
