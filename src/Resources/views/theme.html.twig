@@ -207,3 +207,11 @@
 	{{ block('form_row') }}
 {% endblock %}
 
+
+{% block netliva_color_picker_row %}
+	{% set row_attr = {
+		"netliva_color_picker" : "prepare",
+		"class"                : "netliva_color_picker",
+	} %}
+	{{ block('form_row') }}
+{% endblock %}

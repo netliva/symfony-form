@@ -36,3 +36,6 @@ services:
     Netliva\SymfonyFormBundle\Form\Types\NetlivaNumericSpinType:
         autowire: true
 
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaColorPickerType:
+        autowire: true
+
