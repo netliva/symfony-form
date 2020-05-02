@@ -196,3 +196,14 @@
 		</label>
 	</div>
 {% endblock %}
+
+
+
+{% block netliva_numeric_spin_row %}
+	{% set row_attr = {
+		"netliva_spin"       : "prepare",
+		"data-spin-options"  : spin_option|json_encode()|raw,
+	} %}
+	{{ block('form_row') }}
+{% endblock %}
+

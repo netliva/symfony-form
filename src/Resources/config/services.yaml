@@ -33,3 +33,6 @@ services:
     Netliva\SymfonyFormBundle\Form\Types\NetlivaContactType:
         autowire: true
 
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaNumericSpinType:
+        autowire: true
+
