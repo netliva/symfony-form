@@ -12,6 +12,14 @@ services:
         alias: Netliva\SymfonyFormBundle\Services\FormErrorsService
         public: true
 
+    Netliva\SymfonyFormBundle\Services\CollectionContactExtension:
+        class: Netliva\SymfonyFormBundle\Services\CollectionContactExtension
+        public: false
+
+    netliva.collection_contact_ext:
+        alias: Netliva\SymfonyFormBundle\Services\CollectionContactExtension
+        public: true
+
     Netliva\SymfonyFormBundle\Form\Types\NetlivaAutocompleteType:
         autowire: true
 
