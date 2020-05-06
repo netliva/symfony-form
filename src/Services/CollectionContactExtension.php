@@ -4,16 +4,19 @@ namespace Netliva\SymfonyFormBundle\Services;
 
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class CollectionContactExtension extends AbstractExtension
 {
 	private $container;
+	private $environment;
 
-	public function __construct (ContainerInterface $container)
+	public function __construct (ContainerInterface $container, Environment $environment)
 	{
 		$this->container = $container;
+		$this->environment = $environment;
 	}
 
 	public function getName() {
@@ -33,7 +36,17 @@ class CollectionContactExtension extends AbstractExtension
             new TwigFilter('get_all_phones', [$this, 'getAllPhones']),
             new TwigFilter('get_faxes', [$this, 'getFaxes']),
             new TwigFilter('get_mails', [$this, 'getMails']),
+
+            new TwigFilter('contact_list', [$this, 'getList'], ["is_safe"=>["html"]]),
         );
+    }
+
+	public function getList ($contacts, $type=null)
+	{
+		return $this->environment->render('@NetlivaSymfonyForm/contact.html.twig', [
+			'contacts' => $contacts,
+			'onlyShow' => $type,
+		]);
     }
 
 	public function getPhones ($contacts, $asArray=false)

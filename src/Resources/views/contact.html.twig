@@ -1,0 +1,30 @@
+{% apply spaceless %}
+	<div class="contactArea row">
+		{% for c in contacts %}
+			{% if onlyShow is not defined or not onlyShow or (onlyShow == "gsm" and c.type == "gsm") or (onlyShow == "phone" and c.type == "phone") or (onlyShow == "fax" and c.type == "fax") or (onlyShow == "email" and c.type == "email")   %}
+				<div class="col-sm-6">
+					{% if c.type == "gsm" %}
+						<i class="fa fa-mobile-alt"></i>
+					{% elseif c.type == "phone" %}
+						<i class="fa fa-phone"></i>
+					{% elseif c.type == "fax" %}
+						<i class="fa fa-fax"></i>
+					{% elseif c.type == "email" %}
+						<i class="fa fa-envelope"></i>
+					{% endif %}
+
+					{% if c.type == "email" %}
+						<a href="mailto:{{c.content}}">{{c.content}}</a>
+					{% else%}
+						{{c.content}}
+					{% endif %}
+
+					{{c.internal ? ('<span class="text-muted">Dahili:</span>'~c.internal)|raw : '' }}
+					{{c.notification and c.type == "gsm" ? '<i class="tooltip-button fa fa-bullhorn" title="bilgilendirme"></i>' : '' }}
+					{{c.notification and c.type == "email" ? '<i class="tooltip-button fa fa-send" title="bilgilendirme"></i>' : '' }}
+				</div>
+			{% endif %}
+		{% endfor %}
+		<br clear="all" />
+	</div>
+{% endapply %}
