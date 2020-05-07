@@ -35,6 +35,9 @@ services:
     Netliva\SymfonyFormBundle\Form\Types\NetlivaTreeSelectType:
         autowire: true
 
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaTrueFalseListType:
+        autowire: true
+
     Netliva\SymfonyFormBundle\Form\Types\NetlivaCollectionContactType:
         autowire: true
 

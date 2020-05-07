@@ -215,3 +215,18 @@
 	} %}
 	{{ block('form_row') }}
 {% endblock %}
+
+
+{% block netliva_tflist_widget %}
+	<input {% with {attr: attr|merge({
+		"netliva-true-false" : "prepare",
+		"class"              : "netliva_true_false"~(sortable ? " netliva_tf_sortable"),
+		"type"               : "hidden",
+		"data-switch-options": switchOptions|json_encode()|raw,
+		"data-list"          : list|json_encode()|raw,
+		"data-sortable"      : sortable?1:0,
+		"value"              : value is iterable ? value|json_encode()|raw : '{}'
+	})} %}{{ block('widget_attributes') }}{% endwith %} />
+
+{% endblock %}
+
