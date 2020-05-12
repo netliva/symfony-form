@@ -20,6 +20,14 @@ services:
         alias: Netliva\SymfonyFormBundle\Services\CollectionContactExtension
         public: true
 
+    Netliva\SymfonyFormBundle\Services\NetlivaCustomFieldsExtension:
+        class: Netliva\SymfonyFormBundle\Services\NetlivaCustomFieldsExtension
+        public: false
+
+    netliva.custom_fields_ext:
+        alias: Netliva\SymfonyFormBundle\Services\NetlivaCustomFieldsExtension
+        public: true
+
     Netliva\SymfonyFormBundle\Form\Types\NetlivaAutocompleteType:
         autowire: true
 
