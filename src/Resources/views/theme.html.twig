@@ -230,3 +230,182 @@
 
 {% endblock %}
 
+
+{% block netliva_customfield_row %}
+	{{ form_widget(form) }}
+{% endblock %}
+
+
+{% block netliva_customfield_builder_widget %}
+	<div
+		netliva_custom_fields="prepare"
+		class="netliva_custom_fields"
+		data-id="{{ id }}"
+		data-show-field-keys="{{ show_field_keys }}"
+		data-vals='{{ ((value is iterable and value.count is defined) ? value|json_encode() : '{count:0, fields:{}}')|raw }}'
+	>
+		<button class="btn btn-xs btn-info ncf-add-new"><i class="fa fa-plus"></i> YENİ EKLE</button>
+
+		<div class="btn-group ncf-types-btns">
+			<button data-type="text" class="btn btn-xs btn-info">Kısa Metin</button>
+			<button data-type="textarea" class="btn btn-xs btn-info">Metin Kutusu</button>
+			<button data-type="choice" class="btn btn-xs btn-info">Seçim</button>
+			<button data-type="date" class="btn btn-xs btn-info">Tarih</button>
+			<button data-type="datetime" class="btn btn-xs btn-info">Tarih Saat</button>
+		</div>
+		{#  oooooooo  KISA METİN  oooooooo  #}
+		<div class="ncf-field-options ncf-field-options-text">
+			<h3>Kısa Metin <span>Ekle</span></h3>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-textField-label">Açıklama :</label>
+				<div class="col-sm-8">
+					<input id="{{ form.vars.id }}-textField-label" class="form-control ncf-field-label" type="text">
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Zorunlu Alan :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="1"> Evet</label>
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="0"> Hayır</label>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Alan Tipi :</div>
+				<div class="col-sm-8">
+					<select class="form-control ncf-field-text-type">
+						<option value="text">Metin</option>
+						<option value="email">E-Posta</option>
+						<option value="number">Tam sayılar (Spinner)</option>
+						<option value="numeric">Sayı (Mask)</option>
+						<option value="alpha">Sadece harfler (Boşluksuz)</option>
+						<option value="alphanumeric">Harf ve rakam (Boşluksuz)</option>
+						<option value="aphaplus">Sadece harf, rakam, alt çizgi ve kesikli çizgi</option>
+						<option value="url">Url Adresi</option>
+						<option value="phone">Telefon Numarası</option>
+						<option value="iban">Iban Numarası</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-textField-suffix">Sonek / Birim :</label>
+				<div class="col-sm-8">
+					<input id="{{ form.vars.id }}-textField-suffix" class="form-control ncf-field-text-suffix" type="text">
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button class="btn btn-primary" data-type="text">EKLE</button>
+			</div>
+		</div>
+		{#  oooooooo  METİN ALANI  oooooooo  #}
+		<div class="ncf-field-options ncf-field-options-textarea">
+			<h3>Metin Alanı <span>Ekle</span></h3>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-textareaField-label">Açıklama :</label>
+				<div class="col-sm-8">
+					<input id="{{ form.vars.id }}-textareaField-label" class="form-control ncf-field-label" type="text">
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Zorunlu Alan :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="1"> Evet</label>
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="0"> Hayır</label>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button class="btn btn-primary" data-type="textarea">EKLE</button>
+			</div>
+		</div>
+		{#  oooooooo  SEÇİM ALANI  oooooooo  #}
+		<div class="ncf-field-options ncf-field-options-choice">
+			<h3>Seçim Alanı <span>Ekle</span></h3>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-choiceField-label">Açıklama :</label>
+				<div class="col-sm-8">
+					<input id="{{ form.vars.id }}-choiceField-label" class="form-control ncf-field-label" type="text">
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Zorunlu Alan :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="1"> Evet</label>
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="0"> Hayır</label>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Çoklu Seçim :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-multiple" type="radio" name="ncf-{{ form.vars.id }}-multiple" value="1"> Evet</label>
+					<label><input class="ncf-multiple" type="radio" name="ncf-{{ form.vars.id }}-multiple" value="0"> Hayır</label>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Görünüm :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-expanded" type="radio" name="ncf-{{ form.vars.id }}-expanded" value="1"> Açık Liste</label>
+					<label><input class="ncf-expanded" type="radio" name="ncf-{{ form.vars.id }}-expanded" value="0"> Kapalı Liste</label>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-choiceField-options">Seçenekler :</label>
+				<div class="col-sm-8">
+					<em>
+						<small>* Her satıra bir adet ve <strong>key => value</strong> seşklinde değerleri giriniz. Alt satıra geçmek için ENTER tuşuna basınız.</small>
+					</em>
+					<textarea rows="5" id="{{ form.vars.id }}-choiceField-options" class="form-control" placeholder="{{ "key1 => birinci değer\nkey2 => ikinci değer\nkey3 => üçüncü değer\n . . . .  =>  . . . . . . . . . . . . . . "|raw }}"></textarea>
+					<small>Toplam girilen seçenek sayısı : <span class="ncf-choice-field-counter">0</span> adettir.</small>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button class="btn btn-primary" data-type="choice">EKLE</button>
+			</div>
+		</div>
+		{#  oooooooo  TARİH ALANI  oooooooo  #}
+		<div class="ncf-field-options ncf-field-options-date">
+			<h3>Tarih Alanı <span>Ekle</span></h3>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-dateField-label">Açıklama :</label>
+				<div class="col-sm-8">
+					<input id="{{ form.vars.id }}-dateField-label" class="form-control ncf-field-label" type="text">
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Zorunlu Alan :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="1"> Evet</label>
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="0"> Hayır</label>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button class="btn btn-primary" data-type="date">EKLE</button>
+			</div>
+		</div>
+		{#  oooooooo  TARİH ALANI  oooooooo  #}
+		<div class="ncf-field-options ncf-field-options-datetime">
+			<h3>Tarih ve Saat Alanı <span>Ekle</span></h3>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-datetimeField-label">Açıklama :</label>
+				<div class="col-sm-8">
+					<input id="{{ form.vars.id }}-datetimeField-label" class="form-control ncf-field-label" type="text">
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Zorunlu Alan :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="1"> Evet</label>
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="0"> Hayır</label>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button class="btn btn-primary" data-type="datetime">EKLE</button>
+			</div>
+		</div>
+		{#  oooooooo  BİTİŞ  oooooooo  #}
+
+		<input {{ block('widget_attributes') }} type="hidden" value="" />
+		<ol class="ncf-field-list list-unstyled"></ol>
+
+	</div>
+
+{% endblock %}
+
