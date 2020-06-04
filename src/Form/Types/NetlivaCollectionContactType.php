@@ -15,6 +15,7 @@ class NetlivaCollectionContactType extends AbstractType
 		   'entry_type'         => NetlivaContactType::class,
 		   'allow_add'          => true,
 		   'allow_delete'       => true,
+		   'prototype_name'     => '__contact_name__',
 		   'by_reference'       => false,
 		   'label'              => 'Yeni bir iletişim bilgisi eklemek için Ekle butonunu kullanınız.'
         ));
