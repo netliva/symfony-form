@@ -62,7 +62,10 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 		{
 			if ($field_info["type"] == "date" or $field_info["type"] == "datetime")
 			{
-				$date_temp = new \DateTime($values[$fieldKey]);
+				if ( $values[$fieldKey] instanceof \DateTime)  $date_temp = $values[$fieldKey]["date"];
+				else if (is_array($values[$fieldKey]) and key_exists('date', $values[$fieldKey]))  $date_temp = new \DateTime($values[$fieldKey]["date"]);
+				else $date_temp = new \DateTime($values[$fieldKey]);
+
 				return $this->netext->dateFormat($date_temp, $field_info["type"] == "datetime");
 			}
 
