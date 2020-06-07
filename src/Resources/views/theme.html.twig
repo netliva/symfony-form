@@ -10,7 +10,7 @@
 		class="collection_type be_netliva_collection_type list-unstyled list-group"
 		data-form-id="{{form.vars.id}}"
 		data-prototype-name="{{ prototype_name }}"
-		data-js-settings="{{ js_settings|raw }}"
+		data-js-settings="{{ js_settings|e }}"
 		data-prototype="{{ form_widget(form.vars.prototype)|e }}"
 	>
 		{% for item in form	%}
@@ -110,7 +110,7 @@
 
 
 {% block netliva_datepicker_widget %}
-	<input {{ block('widget_attributes') }} type="hidden" value="{{ date }}" />
+	<input {{ block('widget_attributes') }} type="hidden" value="{{ date.date is defined ? date.date : date }}" />
 	<input
 		{% with {attr: attr|merge({
 			"class": "form-control",
