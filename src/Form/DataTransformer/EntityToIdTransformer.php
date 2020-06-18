@@ -44,6 +44,7 @@ class EntityToIdTransformer implements DataTransformerInterface
 					$value[] = $item->{'get'.ucfirst($val_key)}();
 				}
 				$collection[] = [
+					"matchedKey" => "value",
 					"key"   => $item->{'get'.ucfirst($this->entityInfo['key'])}(),
 					"value" => implode(" - ", $value),
 				];
