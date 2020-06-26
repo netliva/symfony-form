@@ -11,24 +11,9 @@ use Twig\TwigFilter;
 class NetlivaCustomFieldsExtension extends AbstractExtension
 {
 	private $container;
-	/**
-	 * @var SortByFieldExtension
-	 */
-	private $sorter;
-	/**
-	 * @var NetlivaExtension
-	 */
-	private $netext;
-
-	public function __construct (
-		ContainerInterface $container,
-		SortByFieldExtension $sorter,
-		NetlivaExtension $netext
-	)
+	public function __construct (ContainerInterface $container)
 	{
 		$this->container = $container;
-		$this->sorter = $sorter;
-		$this->netext = $netext;
 	}
 
 	public function getName() {
@@ -56,6 +41,13 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 		return $newOptions;
     }
 
+	public function dateFormat($content, $time=true)
+	{
+		if (!($content instanceof \DateTime)) return "";
+
+		return $content->format("d ").$content->format("m").$content->format(" Y").($time?$content->format(" - H:i"):"");
+	}
+
     public function getValue($values, $field_info, $fieldKey)
 	{
 		if (key_exists($fieldKey, $values) && $values[$fieldKey])
@@ -66,7 +58,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 				else if (is_array($values[$fieldKey]) and key_exists('date', $values[$fieldKey]))  $date_temp = new \DateTime($values[$fieldKey]["date"]);
 				else $date_temp = new \DateTime($values[$fieldKey]);
 
-				return $this->netext->dateFormat($date_temp, $field_info["type"] == "datetime");
+				return $this->dateFormat($date_temp, $field_info["type"] == "datetime");
 			}
 
 			if ($field_info["type"] == "choice")
@@ -99,7 +91,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 		$html = '';
 		if (is_array($fields) and key_exists("fields",$fields) and count($fields["fields"]))
 		{
-			foreach ($this->sorter->sortByFieldFilter($fields["fields"], 'order') as $field_key => $field_info)
+			foreach ($this->sortByFieldFilter($fields["fields"], 'order') as $field_key => $field_info)
 			{
 				$html .= '<li class="list-group-item labelled">';
 				$html .= '<small class="badge badge-secondary badge-absolute"> '.$field_info["label"].'</small>';
@@ -110,4 +102,52 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 
 		return $html;
     }
+
+	private function sortByFieldFilter($content, $sort_by = null, $direction = 'asc') {
+
+		if (is_a($content, 'Doctrine\Common\Collections\Collection')) {
+			$content = $content->toArray();
+		}
+
+		if (!is_array($content)) {
+			throw new \InvalidArgumentException('Variable passed to the sortByField filter is not an array');
+		} elseif (count($content) < 1) {
+			return $content;
+		} elseif ($sort_by === null) {
+			throw new Exception('No sort by parameter passed to the sortByField filter');
+		} else {
+			// Unfortunately have to suppress warnings here due to __get function
+			// causing usort to think that the array has been modified:
+			// usort(): Array was modified by the user comparison function
+			uasort($content, function ($a, $b) use ($sort_by, $direction) {
+				$flip = ($direction === 'desc') ? -1 : 1;
+
+				$a_sort_value = null;
+				if (is_array($a) && key_exists($sort_by, $a))
+					$a_sort_value = $a[$sort_by];
+				else if (method_exists($a, 'get' . ucfirst($sort_by)))
+					$a_sort_value = $a->{'get' . ucfirst($sort_by)}();
+				else if (is_object($b) && property_exists($a, $sort_by))
+					$a_sort_value = $a->$sort_by;
+
+				$b_sort_value = null;
+				if (is_array($b) && key_exists($sort_by, $b))
+					$b_sort_value = $b[$sort_by];
+				else if (method_exists($b, 'get' . ucfirst($sort_by)))
+					$b_sort_value = $b->{'get' . ucfirst($sort_by)}();
+				else if (is_object($b) && property_exists($b, $sort_by))
+					$b_sort_value = $b->$sort_by;
+
+				if ($a_sort_value == $b_sort_value) {
+					return 0;
+				} else if ($a_sort_value > $b_sort_value) {
+					return (1 * $flip);
+				} else {
+					return (-1 * $flip);
+				}
+			});
+		}
+		return $content;
+	}
+
 }
