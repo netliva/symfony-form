@@ -142,12 +142,12 @@
 {% block netliva_treeselect_row %}
 	{% set row_attr = {
 		"netliva_treeselect" : "prepare",
-		"class"              :"netliva_treeselect_field",
+		"class"              : "netliva_treeselect_field",
 		"data-first-deep"    : first_deep,
 		"data-multiselect"   : multiselect,
 		"data-breakable"     : breakable,
 		"data-where"         : where|json_encode()|raw,
-		"data-value"         : value,
+		"data-value"         : value|length ? value : null,
 		"data-url"           : path("netliva_symfony_form_treeselect_getoption",{entity_alias:entity_alias, val:"__ID__"}) ,
 	} %}
 	{{ block('form_row') }}
