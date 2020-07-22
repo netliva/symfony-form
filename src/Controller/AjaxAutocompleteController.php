@@ -29,14 +29,13 @@ class AjaxAutocompleteController extends AbstractController
 
 		$select = $this->addPrefix($configs['key']) . " " . $this->alias($configs['key']);
 
-
 		$this->prepareParts($select, $where_clause, $like, $properties, $configs, $letters);
 		if ($configs['search_in_other_values'])
 			$this->prepareParts($select, $where_clause, $like, $configs['other_values'], $configs, $letters);
 		else
 		{
-			foreach ($configs['other_values'] as $val)
-				$select .= ', '.$this->addPrefix($val) . " " . $this->alias($val);
+			foreach ($configs['other_values'] as $key => $val)
+				$select .= ', '.$this->addPrefix($val, $key) . " " . $this->alias($val, $key);
 		}
 
 		$join_dql = '';
@@ -70,7 +69,8 @@ class AjaxAutocompleteController extends AbstractController
 				"key"	=> $r[$this->alias($configs['key'])],
 				"value" => $configs["format"] ? $this->printf_array($configs["format"], $temp) : implode(" - ",$temp)
 			);
-			foreach ($configs['other_values'] as $key => $value) $temp[$value] = $r[$value];
+			foreach ($configs['other_values'] as $key => $value)
+				$temp[$this->alias($value, $key)] = $r[$this->alias($value, $key)];
 			$res[$temp["key"]] = $temp;
 		}
 
@@ -111,13 +111,17 @@ class AjaxAutocompleteController extends AbstractController
 
 	}
 
-	private function addPrefix ($prop)
+	private function addPrefix ($prop, $key=null)
 	{
+		if ($key && !is_numeric($key)) $prop = $key;
 		return (preg_match("/[a-z]{1}\..*/",$prop)?"":"a.").$prop;
 	}
 
-	private function alias ($prop)
+	private function alias ($prop, $key = null)
 	{
+		if ($key && !is_numeric($key))
+			return $prop;
+
 		if (preg_match("/([a-z]){1}\.(.*)/",$prop, $maches))
 			$prop = $maches[1]."_".$maches[2];
 		return $prop;
@@ -145,9 +149,9 @@ class AjaxAutocompleteController extends AbstractController
 	 */
 	protected function prepareParts (string &$select, array &$where_clause, array &$like, $properties, $configs, $letters): void
 	{
-		foreach ($properties as $property)
+		foreach ($properties as $key => $property)
 		{
-			$withPro = $this->addPrefix($property);
+			$withPro = $this->addPrefix($property, $key);
 			$param   = $this->clearPrefix($property).'_like';
 
 			if ($this->alias($configs['key']) != $this->alias($property))

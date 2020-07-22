@@ -89,9 +89,7 @@ class EntityToIdTransformer implements DataTransformerInterface
 
 			$qb = $this->manager->getRepository($this->entityInfo['class'])->createQueryBuilder("e");
 			$qb->where($qb->expr()->in("e.".$this->entityInfo['key'], $ids));
-
 			$entity = $qb->getQuery()->getResult();
-
 		}
 		else
 		{
