@@ -51,61 +51,61 @@ class CollectionContactExtension extends AbstractExtension
 
 	public function getPhones ($contacts, $asArray=false)
 	{
-		return $this->_getPhone("phone", $contacts, $asArray);
+		return $this->_getContact("phone", $contacts, $asArray);
     }
 
 	public function getMobiles ($contacts, $asArray=false)
 	{
-		return $this->_getPhone("gsm", $contacts, $asArray);
+		return $this->_getContact("gsm", $contacts, $asArray);
     }
 
 	public function getAllPhones ($contacts, $asArray=false)
 	{
-		return $this->_getPhone("all", $contacts, $asArray);
+		return $this->_getContact("all", $contacts, $asArray);
     }
 
 	public function getFaxes ($contacts, $asArray=false)
 	{
-		return $this->_getPhone("fax", $contacts, $asArray);
+		return $this->_getContact("fax", $contacts, $asArray);
     }
 
 	public function getMails ($contacts, $asArray=false)
 	{
-		return $this->_getPhone("email", $contacts, $asArray);
+		return $this->_getContact("email", $contacts, $asArray);
     }
 
 	public function getAPhone ($contacts)
 	{
-		$arr = $this->_getPhone("phone", $contacts, true);
+		$arr = $this->_getContact("phone", $contacts, true);
 		return count($arr) ? $arr[0] :  "";
     }
 
 	public function getAMobile ($contacts)
 	{
-		$arr = $this->_getPhone("gsm", $contacts, true);
+		$arr = $this->_getContact("gsm", $contacts, true);
 		return count($arr) ? $arr[0] :  "";
     }
 
 	public function getAMobileOrPhone ($contacts)
 	{
-		$arr = $this->_getPhone("all", $contacts, true);
+		$arr = $this->_getContact("all", $contacts, true);
 		return count($arr) ? $arr[0] :  "";
     }
 
 	public function getAFax ($contacts)
 	{
-		$arr = $this->_getPhone("fax", $contacts, true);
+		$arr = $this->_getContact("fax", $contacts, true);
 		return count($arr) ? $arr[0] :  "";
     }
 
 	public function getAMail ($contacts)
 	{
-		$arr = $this->_getPhone("email", $contacts, true);
+		$arr = $this->_getContact("email", $contacts, true);
 		return count($arr) ? $arr[0] :  "";
     }
 
 
-	private function _getPhone ($type, array $contacts, bool $asArray)
+	private function _getContact ($type, array $contacts, bool $asArray)
 	{
 		$return = $asArray ? [] : '';
 		foreach ($contacts as $contact)
