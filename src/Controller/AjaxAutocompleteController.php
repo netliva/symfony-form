@@ -18,7 +18,7 @@ class AjaxAutocompleteController extends AbstractController
 		$em = $this->get('doctrine')->getManager($configs["em"]);
 		if ($configs['role'] !== 'IS_AUTHENTICATED_ANONYMOUSLY'){
 			if (false === $this->get('security.token_storage')->isGranted( $configs['role'] )) {
-			    throw new AccessDeniedException();
+				throw new AccessDeniedException();
 			}
 		}
 		$maxRows = 75;
@@ -29,7 +29,7 @@ class AjaxAutocompleteController extends AbstractController
 
 		$select = $this->addPrefix($configs['key']) . " " . $this->alias($configs['key']);
 
-		$this->prepareParts($select, $where_clause, $like, $properties, $configs, $letters);
+		$this->prepareParts($select, $where_clause, $like, $properties, $configs, $letters, $order);
 		if ($configs['search_in_other_values'])
 			$this->prepareParts($select, $where_clause, $like, $configs['other_values'], $configs, $letters);
 		else
@@ -51,7 +51,7 @@ class AjaxAutocompleteController extends AbstractController
 		$query = 'SELECT '.$select.
 			' FROM ' . $configs['class'] . ' a ' . $join_dql .
 			' WHERE ' . implode(" OR ", $where_clause) .
-			' ORDER BY ' . $this->addPrefix($properties[0]);
+			" ORDER BY " .$order. $this->addPrefix($properties[0]);
 
 		$results = $em->createQuery($query)
 			->setParameters($like)
@@ -147,7 +147,7 @@ class AjaxAutocompleteController extends AbstractController
 	 * @param        $configs
 	 * @param        $letters
 	 */
-	protected function prepareParts (string &$select, array &$where_clause, array &$like, $properties, $configs, $letters): void
+	protected function prepareParts (string &$select, array &$where_clause, array &$like, $properties, $configs, $letters, &$order = null): void
 	{
 		foreach ($properties as $key => $property)
 		{
@@ -171,23 +171,49 @@ class AjaxAutocompleteController extends AbstractController
 					$where_clause[] = $withPro.' LIKE :'.$param;
 					$like[$param]   = '%'.$letters.'%';
 					break;
+				case "explode_space_or":
+				case "explode_comma_or":
 				case "explode_space":
 				case "explode_comma":
-					$letters          = is_array($letters) ? $letters : explode(
-						($configs['search'] == 'explode_comma' ? "," : " "),
-						$letters
-					);
+					if (!is_array($letters))
+					{
+						$delimiter = (substr($configs['search'], 8, 5) == 'comma' ? "," : " ");
+						$letters   = explode($delimiter, $letters);
+					}
 					$where_sub_clause = [];
+					$say = 0;
 					foreach ($letters as $key => $word)
 					{
 						if (trim($word))
 						{
-							$where_sub_clause[]    = $withPro.' LIKE :'.$param.'_'.$key;
+							$where = $withPro.' LIKE :'.$param.'_'.$key;
 							$like[$param.'_'.$key] = '%'.trim($word).'%';
+
+							if (!$say) // ilk kelimeyi, en başta da ara
+							{
+								$where = "(" . $where . ' OR ' . $withPro . ' LIKE :' . $param . '_' . $key . '_first)';
+								$like[$param.'_'.$key.'_first'] = trim($word).'%';
+								if (is_null($order))
+								{
+									$order = "IF (INSTR($withPro, '".trim($word)."') = 1, 'a','b'), ";
+								}
+							}
+							elseif ($say == count($letters)-1) // son kelimeyi en sonda da ara
+							{
+								$where = "(" . $where . ' OR ' . $withPro . ' LIKE :' . $param . '_' . $key . '_last)';
+								$like[$param.'_'.$key.'_last'] = '%'.trim($word);
+							}
+
+							$where_sub_clause[] = $where;
 						}
+						$say++;
 					}
-					$where_clause[] = "(".implode(" OR ", $where_sub_clause).")";
+
+					$glue = substr($configs['search'], -2 ) == 'or' ? " OR " : " AND ";
+
+					$where_clause[] = "(".implode($glue, $where_sub_clause).")";
 					break;
+
 				default:
 					throw new \Exception('"search" parametresi belirtilmemiş.');
 			}
