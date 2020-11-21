@@ -226,7 +226,7 @@
 		"data-switch-options": switchOptions|json_encode()|raw,
 		"data-list"          : list|json_encode()|raw,
 		"data-sortable"      : sortable?1:0,
-		"value"              : value is iterable ? value|json_encode()|raw : '{}'
+		"value"              : value is iterable and value|length ? value|json_encode()|raw : '{}'
 	})} %}{{ block('widget_attributes') }}{% endwith %} />
 
 {% endblock %}
