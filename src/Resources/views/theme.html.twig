@@ -107,6 +107,16 @@
 	</div>
 {% endblock %}
 
+{% block netliva_tagsinput_widget %}
+	<input {% with {attr: attr|merge({
+			"class": "form-control",
+			"id":form.vars.id~"_helper",
+			"name":form.vars.id~"_helper",
+			"netliva_tagsinput_widget":"",
+			"value": value is iterable ? value|join(",") : value,
+		})} %}{{ block('widget_attributes') }}{% endwith %}
+	/>
+{% endblock %}
 
 
 {% block netliva_datepicker_widget %}

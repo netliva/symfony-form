@@ -77,14 +77,15 @@ Form Type Kullanımı
 ----------------------------
 
 - [Ajax Submit](docs/ajax_submit.md)
-- [Autocomplete](docs/autocomplete.md) (Hazırlanacak)
+- [Autocomplete](docs/autocomplete.md) (Kullanma Klavuzu Hazırlanacak)
 - [Collection](docs/collection.md) 
-- [Collection Contact](docs/collection_contact.md) (Hazırlanacak)
-- [Color Picker](docs/color_picker.md) (Hazırlanacak)
-- [Custom Fields](docs/custom_fields.md) (Hazırlanacak)
+- [Collection Contact](docs/collection_contact.md) (Kullanma Klavuzu Hazırlanacak)
+- [Tags Input](docs/tags_input.md)
+- [Color Picker](docs/color_picker.md) (Kullanma Klavuzu Hazırlanacak)
+- [Custom Fields](docs/custom_fields.md) (Kullanma Klavuzu Hazırlanacak)
 - [Dependent Entity](docs/dependent_entity.md)
-- [Date Picker](docs/date_picker.md) (Hazırlanacak)
-- [Icon Type](docs/icon_type.md) (Hazırlanacak)
-- [Numeric Spin](docs/numeric_spin.md) (Hazırlanacak)
-- [Tree Select](docs/date_picker.md) (Hazırlanacak)
+- [Date Picker](docs/date_picker.md) (Kullanma Klavuzu Hazırlanacak)
+- [Icon Type](docs/icon_type.md) (Kullanma Klavuzu Hazırlanacak)
+- [Numeric Spin](docs/numeric_spin.md) (Kullanma Klavuzu Hazırlanacak)
+- [Tree Select](docs/date_picker.md) (Kullanma Klavuzu Hazırlanacak)
 
