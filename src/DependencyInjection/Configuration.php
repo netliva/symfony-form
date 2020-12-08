@@ -107,8 +107,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-			
-			
+
+
 				/* ==== AJAX AUTO COMPLATE ==== */
 				->arrayNode('autocomplete_entities')
                     ->useAttributeAsKey('id')
@@ -134,6 +134,9 @@ class Configuration implements ConfigurationInterface
 								->end()
 								->arrayNode('value')
 									->prototype('scalar')->end()
+								->end()
+								->variableNode('data')
+									->defaultValue(null)
 								->end()
 								->scalarNode('search')
 									->defaultValue('explode_space')
