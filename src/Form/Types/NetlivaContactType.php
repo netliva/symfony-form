@@ -35,9 +35,18 @@ class NetlivaContactType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$builder
-			->add('type', ChoiceType::class, array('label' => 'Tip', 'choices' => array_flip(['gsm' => 'Gsm', 'phone' => 'Tel', 'fax' => 'Faks', 'email' => 'E-Posta' ])))
-			->add('content', TextType::class, array("label" => "İçerik"))
+		$builder->add('type', ChoiceType::class, [
+					'label'   => 'Tip',
+					'choices' => array_flip([
+						'gsm'        => 'Gsm',
+						'phone'      => 'Tel',
+						'fax'        => 'Faks',
+						'email'      => 'E-Posta',
+						'glob_phone' => 'Global Tel',
+						'glob_gsm'   => 'Global Gsm'
+					])
+				]
+			)->add('content', TextType::class, array("label" => "İçerik"))
 			->add('internal', TextType::class, array("label" => "Dahili", 'required' => false))
 			->add('notification', CheckboxType::class, array("label" => "Bilgilendirme", 'required' => false))
 		;

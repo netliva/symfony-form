@@ -110,16 +110,19 @@ class CollectionContactExtension extends AbstractExtension
 		$return = $asArray ? [] : '';
 		foreach ($contacts as $contact)
 		{
+			$cType = $contact[ "type" ];
+			if (substr($cType,0,5) == "glob_")
+				$cType = substr($cType, 5);
 			if (
-				($type == "all" && ($contact[ "type" ] == "phone" || $contact[ "type" ] == "gsm")) ||
-				$contact[ "type" ] == $type
+				($type == "all" && ($cType == "phone" || $cType == "gsm")) ||
+				$cType == $type
 			)
 			{
 				if (!$asArray && $return) $return .= ", ";
 				$temp = $contact[ "content" ];
-				if ($contact[ "type" ] == "phone" && $contact[ "internal" ]) $temp .= " (" . $contact[ "internal" ] . ")";
+				if ($cType == "phone" && $contact[ "internal" ]) $temp .= " (" . $contact[ "internal" ] . ")";
 
-				if ($asArray && $contact[ "type" ] == "gsm") array_unshift($return, $temp);
+				if ($asArray && $cType == "gsm") array_unshift($return, $temp);
 				elseif ($asArray) $return[] = $temp;
 				else $return .= $temp;
 			}
