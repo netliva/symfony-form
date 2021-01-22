@@ -2,7 +2,7 @@
 
 namespace Netliva\SymfonyFormBundle\Form\Types;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,7 +21,7 @@ class NetlivaDependentType extends AbstractType
 
 	private $container;
 	private $registry;
-	public function __construct (ContainerInterface $container, ManagerRegistry $registry)
+	public function __construct (ContainerInterface $container, Registry $registry)
 	{
 		$this->registry = $registry;
 		$this->container= $container;
@@ -62,7 +62,6 @@ class NetlivaDependentType extends AbstractType
 	public function configureOptions (OptionsResolver $resolver)
 	{
 		$emNormalizer = function(Options $options, $em) {
-			/* @var ManagerRegistry $registry */
 			if (null !== $em)
 			{
 				if ($em instanceof ObjectManager)
