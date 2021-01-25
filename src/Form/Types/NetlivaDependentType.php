@@ -4,6 +4,7 @@ namespace Netliva\SymfonyFormBundle\Form\Types;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Netliva\SymfonyFormBundle\Form\DataTransformer\EntityToIdTransformer;
@@ -21,7 +22,7 @@ class NetlivaDependentType extends AbstractType
 
 	private $container;
 	private $registry;
-	public function __construct (ContainerInterface $container, Registry $registry)
+	public function __construct (ContainerInterface $container, ManagerRegistry $registry)
 	{
 		$this->registry = $registry;
 		$this->container= $container;
