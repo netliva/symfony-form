@@ -144,6 +144,7 @@ class Configuration implements ConfigurationInterface
 								->scalarNode('role')
 									->defaultValue('IS_AUTHENTICATED_ANONYMOUSLY')
 								->end()
+								->arrayNode('filters')->prototype('scalar')->end()->end()
 								->arrayNode('other_values')->prototype('scalar')->end()->end()
 								->scalarNode('search_in_other_values')
 									->defaultValue(true)

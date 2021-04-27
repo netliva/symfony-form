@@ -38,6 +38,10 @@ class AjaxAutocompleteController extends AbstractController
 				$select .= ', '.$this->addPrefix($val, $key) . " " . $this->alias($val, $key);
 		}
 
+		$and_where = [];
+		if (is_array($configs['filters']) && count($configs['filters']))
+			$and_where = $configs['filters'];
+
 		$join_dql = '';
 		if (key_exists('join', $configs) && $configs['join'])
 		{
@@ -50,7 +54,8 @@ class AjaxAutocompleteController extends AbstractController
 
 		$query = 'SELECT '.$select.
 			' FROM ' . $configs['class'] . ' a ' . $join_dql .
-			' WHERE ' . implode(" OR ", $where_clause) .
+			' WHERE (' . implode(" OR ", $where_clause) . ')'.
+			(count($and_where) ? ' AND (' . implode(") AND (", $and_where) . ')' : '') .
 			" ORDER BY " .$order. $this->addPrefix($properties[0]);
 
 		$results = $em->createQuery($query)
