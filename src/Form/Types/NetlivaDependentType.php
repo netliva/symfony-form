@@ -2,8 +2,9 @@
 
 namespace Netliva\SymfonyFormBundle\Form\Types;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Netliva\SymfonyFormBundle\Form\DataTransformer\EntityToIdTransformer;
@@ -62,7 +63,6 @@ class NetlivaDependentType extends AbstractType
 	public function configureOptions (OptionsResolver $resolver)
 	{
 		$emNormalizer = function(Options $options, $em) {
-			/* @var ManagerRegistry $registry */
 			if (null !== $em)
 			{
 				if ($em instanceof ObjectManager)

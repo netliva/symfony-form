@@ -50,7 +50,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 
     public function getValue($values, $field_info, $fieldKey)
 	{
-		if (key_exists($fieldKey, $values) && $values[$fieldKey])
+		if (is_array($values) && key_exists($fieldKey, $values) && $values[$fieldKey])
 		{
 			if ($field_info["type"] == "date" or $field_info["type"] == "datetime")
 			{

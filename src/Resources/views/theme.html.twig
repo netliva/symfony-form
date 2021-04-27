@@ -139,7 +139,7 @@
 
 
 {% block netliva_icon_row %}
-	{% set row_attr = { "netliva_icon_field" : "prepare", class:"netliva_icon_field" } %}
+	{% set row_attr = row_attr|merge({ "netliva_icon_field" : "prepare", class:"netliva_icon_field" }) %}
 	{{ block('form_row') }}
 {% endblock %}
 {% block netliva_icon_widget %}
@@ -152,7 +152,7 @@
 
 
 {% block netliva_treeselect_row %}
-	{% set row_attr = {
+	{% set row_attr = row_attr|merge({
 		"netliva_treeselect" : "prepare",
 		"class"              : "netliva_treeselect_field",
 		"data-first-deep"    : first_deep,
@@ -162,7 +162,7 @@
 		"data-where"         : where|json_encode()|raw,
 		"data-value"         : value|length ? value : null,
 		"data-url"           : path("netliva_symfony_form_treeselect_getoption",{entity_alias:entity_alias, val:"__ID__"}) ,
-	} %}
+	}) %}
 	{{ block('form_row') }}
 {% endblock %}
 {% block netliva_treeselect_widget %}
@@ -213,19 +213,19 @@
 
 
 {% block netliva_numeric_spin_row %}
-	{% set row_attr = {
+	{% set row_attr = row_attr|merge({
 		"netliva_spin"       : "prepare",
 		"data-spin-options"  : spin_option|json_encode()|raw,
-	} %}
+	}) %}
 	{{ block('form_row') }}
 {% endblock %}
 
 
 {% block netliva_color_picker_row %}
-	{% set row_attr = {
+	{% set row_attr = row_attr|merge({
 		"netliva_color_picker" : "prepare",
 		"class"                : "netliva_color_picker",
-	} %}
+	}) %}
 	{{ block('form_row') }}
 {% endblock %}
 
