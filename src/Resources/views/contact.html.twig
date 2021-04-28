@@ -25,9 +25,9 @@
 						{{c.content}}
 					{% endif %}
 
-					{{c.internal ? ('<span class="text-muted">Dahili:</span>'~c.internal)|raw : '' }}
-					{{c.notification and c.type == "gsm" or c.type == "glob_gsm" ? '<i class="tooltip-button fa fa-bullhorn" title="bilgilendirme"></i>' : '' }}
-					{{c.notification and c.type == "email" ? '<i class="tooltip-button fa fa-send" title="bilgilendirme"></i>' : '' }}
+					{{c.internal is defined and c.internal ? ('<span class="text-muted">Dahili:</span>'~c.internal)|raw : '' }}
+					{{c.notification is defined and c.notification and c.type == "gsm" or c.type == "glob_gsm" ? '<i class="tooltip-button fa fa-bullhorn" title="bilgilendirme"></i>' : '' }}
+					{{c.notification is defined and c.notification and c.type == "email" ? '<i class="tooltip-button fa fa-send" title="bilgilendirme"></i>' : '' }}
 				</div>
 			{% endif %}
 		{% endfor %}

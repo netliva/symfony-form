@@ -57,9 +57,6 @@ class ContactValidator extends ConstraintValidator
 				break;
 			}
 
-			if (!key_exists('internal', $cValue)) $cValue['internal'] = null;
-			if (!key_exists('notification', $cValue)) $cValue['notification'] = true;
-
 			if (!in_array($cValue['type'], ['gsm', 'phone', 'fax', 'email', 'glob_gsm', 'glob_phone']))
 			{
 				$this->context->buildViolation($constraint->message['type_mismatch'])->setParameter('{{ order }}', $order)->addViolation();
