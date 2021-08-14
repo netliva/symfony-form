@@ -44,7 +44,7 @@ class AjaxAutocompleteController extends AbstractController
 		if (is_array($configs['filters']) && count($configs['filters']))
 			$and_where = $configs['filters'];
 
-		if (key_exists('activeFilter', $extras) and is_array($extras['activeFilter']))
+		if (is_array($extras) && key_exists('activeFilter', $extras) and is_array($extras['activeFilter']))
 			$and_where = array_merge($and_where, $extras['activeFilter']);
 
 		$join_dql = '';
