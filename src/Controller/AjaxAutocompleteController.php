@@ -12,7 +12,9 @@ class AjaxAutocompleteController extends AbstractController
 	{
 		$letters = $request->request->get("letters");
 		$conf_key = $request->request->get("key");
-		$entities = $this->get('service_container')->getParameter('netliva_form.autocomplete_entities');
+		$extras = $request->request->get("extras");
+
+        $entities = $this->get('service_container')->getParameter('netliva_form.autocomplete_entities');
 		$configs = $entities[$entity_alias][$conf_key];
 
 		$em = $this->get('doctrine')->getManager($configs["em"]);
@@ -41,6 +43,9 @@ class AjaxAutocompleteController extends AbstractController
 		$and_where = [];
 		if (is_array($configs['filters']) && count($configs['filters']))
 			$and_where = $configs['filters'];
+
+		if (is_array($extras) && key_exists('activeFilter', $extras) and is_array($extras['activeFilter']))
+			$and_where = array_merge($and_where, $extras['activeFilter']);
 
 		$join_dql = '';
 		if (key_exists('join', $configs) && $configs['join'])

@@ -99,6 +99,7 @@
 					"data-multiselect":multiselect,
 					"data-multiselect-limit":multiselect_limit,
 					"data-config":entity_config|json_encode,
+					"data-active-filter":active_filter|json_encode,
 					"data-autocomplate-url":path('netliva_symfony_form_autocomplate', {"entity_alias":entity_alias}),
 					"data-autocomplate-back-url": val_id ? path('netliva_symfony_form_autocomplate_back', {"entity_alias":entity_alias, "id":val_id }),
 					})} %}{{ block('attributes') }}{% endwith %}

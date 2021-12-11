@@ -42,8 +42,8 @@ class NetlivaContactType extends AbstractType
 						'phone'      => 'Tel',
 						'fax'        => 'Faks',
 						'email'      => 'E-Posta',
+						'glob_gsm'   => 'Global Gsm',
 						'glob_phone' => 'Global Tel',
-						'glob_gsm'   => 'Global Gsm'
 					])
 				]
 			)->add('content', TextType::class, array("label" => "İçerik"))
