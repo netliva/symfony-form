@@ -1,6 +1,9 @@
 
 {% block collection_type_row %}
-	<div class="netliva_collection_container">
+	<div
+		class="netliva_collection_container"
+		id="collection_type_container_{{form.vars.id}}"
+	>
 		{{ form_row(form) }}
 	</div>
 {% endblock %}
