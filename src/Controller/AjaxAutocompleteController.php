@@ -1,5 +1,7 @@
 <?php
 namespace Netliva\SymfonyFormBundle\Controller;
+use Netliva\SymfonyFormBundle\Events\AutoCompleteValueChanger;
+use Netliva\SymfonyFormBundle\Events\NetlivaSymfonyFormEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,7 +83,12 @@ class AjaxAutocompleteController extends AbstractController
 			);
 			foreach ($configs['other_values'] as $key => $value)
 				$temp[$this->alias($value, $key)] = $r[$this->alias($value, $key)];
-			$res[$temp["key"]] = $temp;
+
+            $eventDispatcher = $this->container->get('event_dispatcher');
+            $event = new AutoCompleteValueChanger($entity_alias, $conf_key, $temp);
+            $eventDispatcher->dispatch(NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER, $event);
+
+			$res[$temp["key"]] = $event->getData();
 		}
 
 		$response = ["status"=> true, "error"=>null, "data" => array_values($res)];
