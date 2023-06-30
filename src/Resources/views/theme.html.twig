@@ -259,7 +259,7 @@
 		class="netliva_custom_fields"
 		data-id="{{ id }}"
 		data-show-field-keys="{{ show_field_keys }}"
-		data-vals='{{ ((value is iterable and value.count is defined and value.fields is defined and value.fields is iterable and value.fields|length ) ? value|json_encode()|replace({"'":"\'"}) : '{count:0, fields:{}}')|raw }}'
+		data-vals='{{ ((value is iterable and value.count is defined and value.fields is defined and value.fields is iterable and value.fields|length ) ? value|json_encode|replace({"'":"´"}) : '{count:0, fields:{}}')|raw }}'
 	>
 		<button class="btn btn-xs btn-info ncf-add-new"><i class="fa fa-plus"></i> YENİ EKLE</button>
 
