@@ -45,7 +45,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 	{
 		if (!($content instanceof \DateTime)) return "";
 
-		return $content->format("d ").$content->format("m").$content->format(" Y").($time?$content->format(" - H:i"):"");
+		return $content->format("d.m.Y").($time?$content->format(" - H:i"):"");
 	}
 
     public function getValue($values, $field_info, $fieldKey)
