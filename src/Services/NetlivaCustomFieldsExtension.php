@@ -125,7 +125,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 				$a_sort_value = null;
 				if (is_array($a) && key_exists($sort_by, $a))
 					$a_sort_value = $a[$sort_by];
-				else if (method_exists($a, 'get' . ucfirst($sort_by)))
+				else if (is_object($a) && method_exists($a, 'get' . ucfirst($sort_by)))
 					$a_sort_value = $a->{'get' . ucfirst($sort_by)}();
 				else if (is_object($b) && property_exists($a, $sort_by))
 					$a_sort_value = $a->$sort_by;
@@ -133,7 +133,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 				$b_sort_value = null;
 				if (is_array($b) && key_exists($sort_by, $b))
 					$b_sort_value = $b[$sort_by];
-				else if (method_exists($b, 'get' . ucfirst($sort_by)))
+				else if (is_object($b) && method_exists($b, 'get' . ucfirst($sort_by)))
 					$b_sort_value = $b->{'get' . ucfirst($sort_by)}();
 				else if (is_object($b) && property_exists($b, $sort_by))
 					$b_sort_value = $b->$sort_by;
