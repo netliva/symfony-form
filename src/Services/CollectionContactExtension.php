@@ -105,9 +105,10 @@ class CollectionContactExtension extends AbstractExtension
     }
 
 
-	private function _getContact ($type, array $contacts, bool $asArray)
+	private function _getContact ($type, ?array $contacts, bool $asArray)
 	{
 		$return = $asArray ? [] : '';
+        if (is_null($contacts)) return $return;
 		foreach ($contacts as $contact)
 		{
 			$cType = $contact[ "type" ];
