@@ -26,9 +26,10 @@ class NetlivaSymfonyFormExtension extends Extension
 		$container->setParameter('netliva_form.dependent_entities', $config['dependent_entities']);
 		$container->setParameter('netliva_form.autocomplete_entities', $config['autocomplete_entities']);
 		$container->setParameter('netliva_form.treeselect_entities', $config['treeselect_entities']);
+		$container->setParameter('netliva_form.contact_options', $config['contact_options']);
 
-
-		$loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
     }
 }

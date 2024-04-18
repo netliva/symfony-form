@@ -34,12 +34,14 @@ class ContactValidator extends ConstraintValidator
 		if (!is_array($value))
 			$this->context->buildViolation($constraint->message['must_array'])->addViolation();
 
+        dump($value);
 
-		foreach ($value as $cKey => $cValue)
+        foreach ($value as $cKey => $cValue)
 		{
 			$order = is_numeric($cKey) ? (int)$cKey + 1 : $cKey;
+            dump($cValue);
 
-			if (!is_array($cValue))
+            if (!is_array($cValue))
 			{
 				$this->context->buildViolation($constraint->message['in_must_array'])->setParameter('{{ order }}', $order)->addViolation();
 				break;
@@ -71,7 +73,7 @@ class ContactValidator extends ConstraintValidator
 
 			if ($cValue['type'] == 'gsm' && !preg_match('/^\+90\(5\d{2}\)\d{3}-\d{4}/', trim($cValue['content'])))
 			{
-				$this->context->buildViolation($constraint->message['mobile_content_mismatch'])->setParameter('{{ order }}', $order)->addViolation();
+				$this->context->buildViolation($constraint->message['mobile_content_mismatch'])->setParameter('{{ order }}', $order)->setParameter('{{ value }}', trim($cValue['content'])?:"Boş")->addViolation();
 				break;
 			}
 
@@ -81,6 +83,5 @@ class ContactValidator extends ConstraintValidator
 				break;
 			}
 		}
-
 	}
 }

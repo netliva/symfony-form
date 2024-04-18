@@ -204,13 +204,27 @@
 		{{ form_widget(form.type, {'attr': {'class': 'form-control contactType'}}) }}
 		<button class="closeContactTypeBtn btn btn-warning"><i class="fa fa-times"></i></button>
 	</div>
-	<div class="netliva_contact_fields">
-		<button class="selectContactTypeBtn btn btn-info"><i class="fa fa-bell"></i></button>
-		{{ form_widget(form.content, {'attr': {'class': 'form-control contactContent'}}) }}
-		{{ form_widget(form.internal, {'attr': {'class': 'form-control contactInternal', 'placeholder':'dahili'}}) }}
-		<label class="notiLabel">
-			{{ form_widget(form.notification, {'attr': {'class': 'contactNotification input-switch-alt'}}) }}
-		</label>
+	<div class="netliva_contact_fields_row">
+		<div class="netliva_contact_fields">
+			<button class="selectContactTypeBtn btn btn-info"><i class="fa fa-bell"></i></button>
+			{{ form_widget(form.content, {'attr': {'class': 'form-control contactContent'}}) }}
+			{{ form_widget(form.internal, {'attr': {'class': 'form-control contactInternal', 'placeholder':'dahili'}}) }}
+			<label class="notiLabel">
+				{{ form_widget(form.notification, {'attr': {'class': 'contactNotification input-switch-alt'}}) }}
+			</label>
+			<button class="openContactExtraBtn btn btn-info"><i class="fa fa-ellipsis-h"></i></button>
+		</div>
+		<div class="netliva_contact_fields_extra_areas mb-1 pt-2">
+			<button class="closeContactExtraBtn btn btn-warning"><i class="fa fa-times"></i></button>
+			{{ form_row(form.description, {'attr': {'class': ''}}) }}
+			<div class="netliva_contact_fields_co_areas">
+				{% if form.contact_options is defined and form.contact_options.children|length>0 %}
+					{% for coChild in form.contact_options.children %}
+						{{ form_widget(coChild, {'attr': {'class': 'contactOpt'}}) }}
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
 	</div>
 {% endblock %}
 

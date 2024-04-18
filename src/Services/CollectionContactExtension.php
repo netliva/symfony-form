@@ -43,9 +43,14 @@ class CollectionContactExtension extends AbstractExtension
 
 	public function getList ($contacts, $type=null)
 	{
+        $contactOptions = [];
+        foreach ($this->container->getParameter('netliva_form.contact_options') as $contactOption)
+            $contactOptions[$contactOption['key']] = $contactOption['value'];
+
 		return $this->environment->render('@NetlivaSymfonyForm/contact.html.twig', [
-			'contacts' => $contacts,
-			'onlyShow' => $type,
+            'contactOptions' => $contactOptions,
+            'contacts'       => $contacts,
+            'onlyShow'       => $type,
 		]);
     }
 

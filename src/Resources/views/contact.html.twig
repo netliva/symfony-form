@@ -20,14 +20,31 @@
 					{% endif %}
 
 					{% if c.type == "email" %}
-						<a href="mailto:{{c.content}}">{{c.content}}</a>
+						<a href="mailto:{{c.content}}" class="pl-1">{{c.content}}</a>
 					{% else%}
 						{{c.content}}
 					{% endif %}
 
 					{{c.internal is defined and c.internal ? ('<span class="text-muted">Dahili:</span>'~c.internal)|raw : '' }}
-					{{c.notification is defined and c.notification and c.type == "gsm" or c.type == "glob_gsm" ? '<i class="tooltip-button fa fa-bullhorn" title="bilgilendirme"></i>' : '' }}
-					{{c.notification is defined and c.notification and c.type == "email" ? '<i class="tooltip-button fa fa-send" title="bilgilendirme"></i>' : '' }}
+					{{c.notification is defined and c.notification and c.type == "gsm" or c.type == "glob_gsm" ? '<i class="tooltip-button tt-btn fa fa-bullhorn text-success" title="İletişim İzni Var"></i>' : '' }}
+					{{c.notification is defined and c.notification and c.type == "email" ? '<i class="tooltip-button tt-btn fa fa-send text-success" title="İletişim İzni Var"></i>' : '' }}
+					{% if c.description is defined and c.description %}
+						<div class="text-muted"><small>{{ c.description }}</small></div>
+					{% endif %}
+					{% if c.contact_options is defined and c.contact_options %}
+						<ul class="list-unstyled mb-0">
+							{% for coKey, coSitu in c.contact_options %}
+								{% if contactOptions[coKey] is defined %}
+									<li>
+										<small class="text-{{ coSitu ? "success" : "danger" }}">
+											<i class="sqr {{ coSitu ? "fa fa-check-square" : "far fa-square" }}"></i>
+											{{ contactOptions[coKey] }}
+										</small>
+									</li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					{% endif %}
 				</div>
 			{% endif %}
 		{% endfor %}

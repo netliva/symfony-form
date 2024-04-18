@@ -19,7 +19,7 @@ class Contact extends Constraint
 	    'not_found_content' => '{{ order }}. sıradaki iletişim bilgisinde içerik (content) bilgisi bulunamadı',
 	    'type_mismatch' => '{{ order }}. sıradaki iletişim bilgisinde tip bilgisi tanınamadı. "gsm", "phone", "fax", "email", "glob_gsm" ve "glob_phone" değerlerinden biri gönderilmelidir',
 	    'phone_content_mismatch' => '{{ order }}. sıradaki iletişim bilgisinde girilen telefon numarası geçersizdir. Beklenen Format : +90(000)000-0000',
-	    'mobile_content_mismatch' => '{{ order }}. sıradaki iletişim bilgisinde girilen mobil telefon numarası geçersizdir. Beklenen Format : +90(500)000-0000',
+	    'mobile_content_mismatch' => '{{ order }}. sıradaki iletişim bilgisinde girilen mobil telefon numarası geçersizdir. Beklenen Format : +90(500)000-0000, Girilen Değer : {{ value }}',
 	    'mail_content_mismatch' => '{{ order }}. sıradaki iletişim bilgisinde girilen e-posta adresi geçersizdir',
 	];
 

@@ -24,6 +24,16 @@ class Configuration implements ConfigurationInterface
 		$rootNode
 			->children()
 
+                ->arrayNode('contact_options')
+					->prototype('array')
+						->children()
+							->scalarNode('key')->end()
+							->scalarNode('value')->end()
+						->end()
+					->end()
+					->defaultValue([])
+				->end()
+
 				/* ==== BAĞIMLI ALANLAR ==== */
 				->arrayNode('dependent_entities')
                     ->useAttributeAsKey('id')
