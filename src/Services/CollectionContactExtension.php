@@ -41,16 +41,23 @@ class CollectionContactExtension extends AbstractExtension
         );
     }
 
-	public function getList ($contacts, $type=null)
+	public function getList ($contacts, $type=null, $options=[])
 	{
         $contactOptions = [];
         foreach ($this->container->getParameter('netliva_form.contact_options') as $contactOption)
             $contactOptions[$contactOption['key']] = $contactOption['value'];
 
+        $options = array_merge([
+               'mode'   => "show",
+               'column' => 2,
+               'border' => true,
+           ], $options);
+
 		return $this->environment->render('@NetlivaSymfonyForm/contact.html.twig', [
             'contactOptions' => $contactOptions,
             'contacts'       => $contacts,
             'onlyShow'       => $type,
+            'options'        => $options,
 		]);
     }
 
@@ -110,7 +117,7 @@ class CollectionContactExtension extends AbstractExtension
     }
 
 
-	private function _getContact ($type, ?array $contacts, bool $asArray)
+	private function _getContact ($type, ?array $contacts, $asArray)
 	{
 		$return = $asArray ? [] : '';
         if (is_null($contacts)) return $return;
@@ -125,8 +132,15 @@ class CollectionContactExtension extends AbstractExtension
 			)
 			{
 				if (!$asArray && $return) $return .= ", ";
-				$temp = $contact[ "content" ];
-				if ($cType == "phone" && $contact[ "internal" ]) $temp .= " (" . $contact[ "internal" ] . ")";
+                if ($asArray === 'extend')
+                {
+                    $temp = $contact;
+                }
+                else
+                {
+                    $temp = $contact[ "content" ];
+				    if ($cType == "phone" && $contact[ "internal" ]) $temp .= " (" . $contact[ "internal" ] . ")";
+                }
 
 				if ($asArray && $cType == "gsm") array_unshift($return, $temp);
 				elseif ($asArray) $return[] = $temp;

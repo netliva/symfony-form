@@ -1,5 +1,5 @@
 {% apply spaceless %}
-	<div class="contactArea row">
+	<div class="contactArea {{ options.column>1?'row' }}" {{ options.mode == "selection" ? 'data-selectable' }}>
 		{% for c in contacts %}
 			{% if onlyShow is not defined
 				or not onlyShow
@@ -9,7 +9,13 @@
 				or (onlyShow == "fax" and c.type == "fax")
 				or (onlyShow == "email" and c.type == "email")
 			%}
-				<div class="col-sm-6">
+				<div class="{{ options.border==0?'border-0' }}{{ options.column>1?'col-sm-'~(12/options.column) }} {{ (c.notification is defined and c.notification) ? "selectedLine" }}"
+					 data-id="{{ loop.index }}"
+					 data-contact="{{ c|json_encode }}"
+				>
+					{% if options.mode == "selection" %}
+						<span class="mark_area"></span>
+					{% endif %}
 					{% if c.type == "gsm" or c.type == "glob_gsm" %}
 						<i class="fa fa-mobile-alt"></i>
 					{% elseif c.type == "phone" or c.type == "glob_phone" %}
@@ -38,7 +44,7 @@
 								{% if contactOptions[coKey] is defined %}
 									<li>
 										<small class="text-{{ coSitu ? "success" : "danger" }}">
-											<i class="sqr {{ coSitu ? "fa fa-check-square" : "far fa-square" }}"></i>
+											<i class="sqr fa fa-{{ coSitu ? "check" : "times" }}"></i>
 											{{ contactOptions[coKey] }}
 										</small>
 									</li>
@@ -49,6 +55,9 @@
 				</div>
 			{% endif %}
 		{% endfor %}
-		<br clear="all" />
 	</div>
+	<style>
+		.contactArea.selectable-container .selectedLine { background: rgba(220,180,0,0.4); }
+		.contactArea.selectable-container .notSelectedLine { opacity: .5; }
+	</style>
 {% endapply %}
