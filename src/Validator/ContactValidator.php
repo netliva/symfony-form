@@ -34,13 +34,9 @@ class ContactValidator extends ConstraintValidator
 		if (!is_array($value))
 			$this->context->buildViolation($constraint->message['must_array'])->addViolation();
 
-        dump($value);
-
         foreach ($value as $cKey => $cValue)
 		{
 			$order = is_numeric($cKey) ? (int)$cKey + 1 : $cKey;
-            dump($cValue);
-
             if (!is_array($cValue))
 			{
 				$this->context->buildViolation($constraint->message['in_must_array'])->setParameter('{{ order }}', $order)->addViolation();
