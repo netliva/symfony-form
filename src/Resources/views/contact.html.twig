@@ -5,6 +5,7 @@
 				or not onlyShow
 				or (onlyShow == "gsm" and (c.type == "gsm" or c.type == "glob_gsm"))
 				or (onlyShow == "phone" and (c.type == "phone" or c.type == "glob_phone"))
+				or (onlyShow == "phone_or_gsm" and (c.type == "gsm" or c.type == "glob_gsm" or c.type == "phone" or c.type == "glob_phone"))
 				or (onlyShow == "fax" and c.type == "fax")
 				or (onlyShow == "email" and c.type == "email")
 			%}
