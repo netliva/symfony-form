@@ -283,6 +283,7 @@
 			<button data-type="choice" class="btn btn-xs btn-info">Seçim</button>
 			<button data-type="date" class="btn btn-xs btn-info">Tarih</button>
 			<button data-type="datetime" class="btn btn-xs btn-info">Tarih Saat</button>
+			<button data-type="file" class="btn btn-xs btn-info">Dosya</button>
 		</div>
 		{#  oooooooo  KISA METİN  oooooooo  #}
 		<div class="ncf-field-options ncf-field-options-text">
@@ -429,6 +430,26 @@
 			</div>
 			<div class="form-group text-center">
 				<button class="btn btn-primary" data-type="datetime">EKLE</button>
+			</div>
+		</div>
+		{#  oooooooo  TARİH ALANI  oooooooo  #}
+		<div class="ncf-field-options ncf-field-options-file">
+			<h3>Dosya Alanı <span>Ekle</span></h3>
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label pr-0" for="{{ form.vars.id }}-fileField-label">Açıklama :</label>
+				<div class="col-sm-8">
+					<input id="{{ form.vars.id }}-fileField-label" class="form-control ncf-field-label" type="text">
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-4 col-form-label pr-0">Zorunlu Alan :</div>
+				<div class="col-sm-8">
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="1"> Evet</label>
+					<label><input class="ncf-required" type="radio" name="ncf-{{ form.vars.id }}-required" value="0"> Hayır</label>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button class="btn btn-primary" data-type="file">EKLE</button>
 			</div>
 		</div>
 		{#  oooooooo  BİTİŞ  oooooooo  #}

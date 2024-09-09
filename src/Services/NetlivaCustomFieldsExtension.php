@@ -2,6 +2,7 @@
 namespace Netliva\SymfonyFormBundle\Services;
 
 
+use Netliva\FileTypeBundle\Service\UploadHelperService;
 use Netliva\TwigBundle\Twig\Extension\NetlivaExtension;
 use Netliva\TwigBundle\Twig\Extension\SortByFieldExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -10,10 +11,11 @@ use Twig\TwigFilter;
 
 class NetlivaCustomFieldsExtension extends AbstractExtension
 {
-	private $container;
-	public function __construct (ContainerInterface $container)
+	private $container, $uploadHelperService;
+	public function __construct (ContainerInterface $container, UploadHelperService $uploadHelperService)
 	{
 		$this->container = $container;
+		$this->uploadHelperService = $uploadHelperService;
 	}
 
 	public function getName() {
@@ -59,6 +61,14 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 				else $date_temp = new \DateTime($values[$fieldKey]);
 
 				return $this->dateFormat($date_temp, $field_info["type"] == "datetime");
+			}
+
+			if ($field_info["type"] == "file")
+			{
+                return '<a href="'.$this->uploadHelperService->getFileUri($values[$fieldKey]).'" target="_blank">
+						<i class="fa fa-external-link-alt"></i>
+						'.$this->uploadHelperService->getFileName($values[$fieldKey]).'
+					</a>';
 			}
 
 			if ($field_info["type"] == "choice")
