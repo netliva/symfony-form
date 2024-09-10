@@ -102,26 +102,56 @@ class AjaxAutocompleteController extends AbstractController
 		$res = array();
 		if (count($entity_inf) == 1)
 		{
-			$entity_inf = current($entity_inf);
-			$em = $this->get('doctrine')->getManager($entity_inf["em"]);
+            $conf_key = array_key_first($entity_inf);
+            $configs = $entity_inf[$conf_key];
+            $em = $this->get('doctrine')->getManager($configs["em"]);
 
-			$query = 'SELECT e.'. implode(', e.', $entity_inf['value']). ', e.' . $entity_inf['key'] .
-				(count($entity_inf['other_values']) ? ', e.'.implode(", e.", $entity_inf['other_values']).' ':' ').
-				'FROM ' . $entity_inf['class'] . ' e ' .
-				'WHERE e.' . $entity_inf['key'] . ' = :id ';
-			$results = $em->createQuery($query)
-				->setParameter('id', $id )
-				->getScalarResult();
-			if (count($results))
+            $select = $this->addPrefix($configs['key']) . " " . $this->alias($configs['key']);
+            foreach ($configs['value'] as $key => $property)
+            {
+                $withPro = $this->addPrefix($property, $key);
+                if ($this->alias($configs['key']) != $this->alias($property))
+                    $select .= ', '.$withPro." ".$this->alias($property);
+            }
+            foreach ($configs['other_values'] as $key => $val)
+                $select .= ', '.$this->addPrefix($val, $key) . " " . $this->alias($val, $key);
+
+
+            $join_dql = '';
+            if (key_exists('join', $configs) && $configs['join'])
+            {
+                $table_name = 'a';
+                foreach ($configs['join'] as $join)
+                {
+                    $join_dql .= ' JOIN '.$join.' '.++$table_name.' ';
+                }
+            }
+
+            $query = 'SELECT '.$select.
+                ' FROM ' . $configs['class'] . ' a ' . $join_dql .
+            'WHERE a.' . $configs['key'] . ' = :id ';
+
+            $results = $em->createQuery($query)
+				->setParameter('id', $id)
+				->getOneOrNullResult();
+			if ($results)
 			{
-				$res = array(
-					"key" => $results[0][$entity_inf['key']],
-				);
-				$values = [];
-				foreach ($entity_inf['value'] as $key => $value) $values[] = $results[0][$value];
-				$res["value"] = implode(" - ", $values);
-				foreach ($entity_inf['other_values'] as $key => $value) $res[$value] = $results[0][$value];
-			}
+                $res = [];
+                foreach ($configs['value'] as $key => $value) $res[] = $results[$this->alias($value)];
+
+                $res = array(
+                    "key"	=> $results[$this->alias($configs['key'])],
+                    "value" => $configs["format"] ? $this->printf_array($configs["format"], $res) : implode(" - ",$res)
+                );
+                foreach ($configs['other_values'] as $key => $value)
+                    $res[$this->alias($value, $key)] = $results[$this->alias($value, $key)];
+
+                $eventDispatcher = $this->container->get('event_dispatcher');
+                $event = new AutoCompleteValueChanger($entity_alias, $conf_key, $res);
+                $eventDispatcher->dispatch(NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER, $event);
+
+                $res = $event->getData();
+            }
 		}
 
 		return new Response(json_encode($res));
