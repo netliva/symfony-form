@@ -2,10 +2,15 @@
 namespace Netliva\SymfonyFormBundle\Services;
 
 
+use Netliva\FileTypeBundle\Form\Type\NetlivaFileType;
 use Netliva\FileTypeBundle\Service\UploadHelperService;
+use Netliva\SymfonyFormBundle\Form\Types\NetlivaDatePickerType;
 use Netliva\TwigBundle\Twig\Extension\NetlivaExtension;
 use Netliva\TwigBundle\Twig\Extension\SortByFieldExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -160,4 +165,59 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 		return $content;
 	}
 
+    private $fieldTypes = [
+        'text'     => ['class' => TextType::class, 'default_options' => []],
+        'textarea' => ['class' => TextareaType::class, 'default_options' => [] ],
+        'date'     => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'date']],
+        'datetime' => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'full']],
+        'file'     => ['class' => NetlivaFileType::class, 'default_options' => ['multiple' => false, 'bootstrap' => true, 'attr'=>['placeholder'=>'Belge Seçiniz']]],
+        'choice'   => ['class' => ChoiceType::class, 'default_options' => []],
+    ];
+
+    public function prepareFieldOptions ($field)
+    {
+        $fieldOptions = [];
+        if ($field['type'] == 'choice')
+        {
+            $choices = [];
+            foreach ($field['options'] as $option)
+            {
+                $info = explode("=>", $option);
+                if (count($info)>=2)
+                    $choices[trim(array_shift($info))] = trim(implode("=>", $info));
+                else
+                    $choices[trim($option)] = trim($option);
+            }
+
+            $fieldOptions['multiple'] = $field['multiple'];
+            $fieldOptions['expanded'] = $field['expanded'];
+            $fieldOptions['choices'] = array_flip($choices);
+        }
+        elseif ($field['type'] == 'text')
+        {
+            $fieldOptions['attr'] = [];
+            if (key_exists("inputType", $field))
+            {
+                if ($field["inputType"] == "number")
+                    $fieldOptions['attr']['ncf-touch-spin'] = 'prepare';
+                elseif ($field["inputType"] != "text")
+                    $fieldOptions['attr']['ncf-mask-'.$field["inputType"]] = 'prepare';
+            }
+
+            if (key_exists("suffix", $field) && $field["suffix"])
+                $fieldOptions['attr']['ncf-suffix'] = $field["suffix"];
+        }
+
+        return [
+            $this->fieldTypes[$field['type']]['class'],
+            array_merge(
+                $this->fieldTypes[$field['type']]['default_options'],
+                $fieldOptions,
+                [
+                    'label'    => $field['label'],
+                    'required' => $field['required']
+                ]
+            )
+        ];
+    }
 }

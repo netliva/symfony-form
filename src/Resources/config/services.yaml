@@ -28,6 +28,10 @@ services:
         alias: Netliva\SymfonyFormBundle\Services\NetlivaCustomFieldsExtension
         public: true
 
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaCustomFieldsType:
+        autowire: true
+        tags: ['form.type']
+
     Netliva\SymfonyFormBundle\Form\Types\NetlivaAutocompleteType:
         autowire: true
 

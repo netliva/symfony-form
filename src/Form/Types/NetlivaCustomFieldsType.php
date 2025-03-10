@@ -1,1 +1,62 @@
-<?phpnamespace Netliva\SymfonyFormBundle\Form\Types;use Netliva\FileTypeBundle\Form\Type\NetlivaFileType;use Symfony\Component\Form\AbstractType;use Symfony\Component\Form\Extension\Core\Type\ChoiceType;use Symfony\Component\Form\Extension\Core\Type\FormType;use Symfony\Component\Form\Extension\Core\Type\TextareaType;use Symfony\Component\Form\Extension\Core\Type\TextType;use Symfony\Component\Form\FormBuilderInterface;use Symfony\Component\Form\FormInterface;use Symfony\Component\Form\FormView;use Symfony\Component\OptionsResolver\OptionsResolver;class NetlivaCustomFieldsType extends AbstractType{    public function configureOptions(OptionsResolver $resolver)    {        $resolver->setDefaults(array(		   'fields'       => [],        ));    }    public function getBlockPrefix()    {        return 'netliva_customfield';    }    public function getParent()    {        return FormType::class;    }    public function buildForm(FormBuilderInterface $builder, array $options)    {		uasort($options["fields"], function($a, $b) {			return (key_exists("order", $a) ? $a['order'] : 0) <=> (key_exists("order", $b) ? $b['order'] : 0);		});		$types = [			'text'     => ['class' => TextType::class, 'default_options' => []],			'textarea' => ['class' => TextareaType::class, 'default_options' => [] ],			'date'     => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'date']],			'datetime' => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'full']],			'file'     => ['class' => NetlivaFileType::class, 'default_options' => ['multiple' => false, 'bootstrap' => true, 'attr'=>['placeholder'=>'Belge Seçiniz']]],			'choice'   => ['class' => ChoiceType::class, 'default_options' => []],		];		foreach ($options["fields"] as $key => $field)		{			$fieldOptions = [];			if ($field['type'] == 'choice')			{				$choices = [];				foreach ($field['options'] as $option)				{					$info = explode("=>", $option);					if (count($info)>=2)						$choices[trim(array_shift($info))] = trim(implode("=>", $info));					else						$choices[trim($option)] = trim($option);				}				$fieldOptions['multiple'] = $field['multiple'];				$fieldOptions['expanded'] = $field['expanded'];				$fieldOptions['choices'] = array_flip($choices);			}			elseif ($field['type'] == 'text')			{				$fieldOptions['attr'] = [];				if (key_exists("inputType", $field))				{					if ($field["inputType"] == "number")						$fieldOptions['attr']['ncf-touch-spin'] = 'prepare';					elseif ($field["inputType"] != "text")						$fieldOptions['attr']['ncf-mask-'.$field["inputType"]] = 'prepare';				}				if (key_exists("suffix", $field) && $field["suffix"])					$fieldOptions['attr']['ncf-suffix'] = $field["suffix"];			}			$builder->add($key, $types[$field['type']]['class'], array_merge($types[$field['type']]['default_options'], $fieldOptions, ['label' => $field['label'], 'required'=>$field['required']]) );		}    }    public function buildView(FormView $view, FormInterface $form, array $options)    {	}}
+<?php
+
+namespace Netliva\SymfonyFormBundle\Form\Types;
+
+use Netliva\FileTypeBundle\Form\Type\NetlivaFileType;
+use Netliva\SymfonyFormBundle\Services\NetlivaCustomFieldsExtension;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class NetlivaCustomFieldsType extends AbstractType
+{
+    private $ncfe;
+    public function __construct (
+        NetlivaCustomFieldsExtension $ncfe
+    ) {
+        $this->ncfe = $ncfe;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+		   'fields'       => [],
+        ));
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'netliva_customfield';
+    }
+
+    public function getParent()
+    {
+        return FormType::class;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+		uasort($options["fields"], function($a, $b) {
+			return (key_exists("order", $a) ? $a['order'] : 0) <=> (key_exists("order", $b) ? $b['order'] : 0);
+		});
+
+		foreach ($options["fields"] as $key => $field)
+		{
+			[$type, $opt] = $this->ncfe->prepareFieldOptions($field);
+			$builder->add($key, $type, $opt);
+		}
+    }
+
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+
+	}
+}
+
