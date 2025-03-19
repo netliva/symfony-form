@@ -9,6 +9,8 @@ use Netliva\TwigBundle\Twig\Extension\NetlivaExtension;
 use Netliva\TwigBundle\Twig\Extension\SortByFieldExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Twig\Extension\AbstractExtension;
@@ -166,12 +168,14 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 	}
 
     private $fieldTypes = [
-        'text'     => ['class' => TextType::class, 'default_options' => []],
-        'textarea' => ['class' => TextareaType::class, 'default_options' => [] ],
-        'date'     => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'date']],
-        'datetime' => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'full']],
-        'file'     => ['class' => NetlivaFileType::class, 'default_options' => ['multiple' => false, 'bootstrap' => true, 'attr'=>['placeholder'=>'Belge Seçiniz']]],
-        'choice'   => ['class' => ChoiceType::class, 'default_options' => []],
+        'text'           => ['class' => TextType::class, 'default_options' => []],
+        'textarea'       => ['class' => TextareaType::class, 'default_options' => [] ],
+        'simpledate'     => ['class' => DateType::class, 'default_options' => ['format'=>\IntlDateFormatter::FULL]],
+        'simpledatetime' => ['class' => DateTimeType::class, 'default_options' => ['format'=>\IntlDateFormatter::FULL]],
+        'date'           => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'date']],
+        'datetime'       => ['class' => NetlivaDatePickerType::class, 'default_options' => ['format'=>'full']],
+        'file'           => ['class' => NetlivaFileType::class, 'default_options' => ['multiple' => false, 'bootstrap' => true, 'attr'=>['placeholder'=>'Belge Seçiniz']]],
+        'choice'         => ['class' => ChoiceType::class, 'default_options' => []],
     ];
 
     public function prepareFieldOptions ($field)
@@ -192,6 +196,10 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
             $fieldOptions['multiple'] = $field['multiple'];
             $fieldOptions['expanded'] = $field['expanded'];
             $fieldOptions['choices'] = array_flip($choices);
+        }
+        elseif ($field['type'] == 'simpledate' or $field['type'] == 'simpledatetime')
+        {
+            $fieldOptions['years'] = range((int) date('Y') - 100, (int) date('Y') + 100);
         }
         elseif ($field['type'] == 'text')
         {
