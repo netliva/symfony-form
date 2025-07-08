@@ -17,8 +17,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('netliva_symfony_form');
+        $treeBuilder = new TreeBuilder('netliva_symfony_form');
+        $rootNode = $treeBuilder->getRootNode();
 
 
 		$rootNode

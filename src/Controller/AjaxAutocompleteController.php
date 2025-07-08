@@ -86,7 +86,7 @@ class AjaxAutocompleteController extends AbstractController
 
             $eventDispatcher = $this->container->get('event_dispatcher');
             $event = new AutoCompleteValueChanger($entity_alias, $conf_key, $temp);
-            $eventDispatcher->dispatch(NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER, $event);
+            $eventDispatcher->dispatch($event, NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER);
 
 			$res[$temp["key"]] = $event->getData();
 		}
@@ -148,7 +148,7 @@ class AjaxAutocompleteController extends AbstractController
 
                 $eventDispatcher = $this->container->get('event_dispatcher');
                 $event = new AutoCompleteValueChanger($entity_alias, $conf_key, $res);
-                $eventDispatcher->dispatch(NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER, $event);
+                $eventDispatcher->dispatch($event, NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER);
 
                 $res = $event->getData();
             }

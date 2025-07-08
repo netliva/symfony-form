@@ -3,7 +3,7 @@ namespace Netliva\SymfonyFormBundle\Events;
 
 
 use Netliva\CommentBundle\Entity\AuthorInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AutoCompleteValueChanger extends Event
 {
