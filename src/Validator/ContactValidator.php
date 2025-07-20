@@ -2,16 +2,9 @@
 
 namespace Netliva\SymfonyFormBundle\Validator;
 
-use App\Entity\Staff\Staff;
-use Crm\ApiBundle\Classes\ApiResponse;
-use Crm\ManagementBundle\Services\DoctrineHelper;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ContactValidator extends ConstraintValidator
 {
