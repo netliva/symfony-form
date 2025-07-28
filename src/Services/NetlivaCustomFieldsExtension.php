@@ -29,7 +29,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
         return 'netliva_customfields_filters';
     }
 
-    public function getFilters() {
+    public function getFilters(): array {
         return array(
             new TwigFilter('fetch_fields', [$this, 'fetchFields'] , ['is_safe' => ['html']]),
             new TwigFilter('get_value', [$this, 'getValue'] , ['is_safe' => ['html']]),

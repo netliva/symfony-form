@@ -23,7 +23,7 @@ class CollectionContactExtension extends AbstractExtension
         return 'netliva_collection_contact_ext';
     }
 
-    public function getFilters() {
+    public function getFilters(): array {
         return array(
             new TwigFilter('get_a_mobile_or_phone', [$this, 'getAMobileOrPhone']),
             new TwigFilter('get_a_mobile', [$this, 'getAMobile']),

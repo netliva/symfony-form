@@ -28,8 +28,7 @@ class NetlivaDependentType extends AbstractType
 		$this->container= $container;
 	}
 
-	public function getBlockPrefix ()
-	{
+	public function getBlockPrefix(): string	{
 		return 'netliva_dependent';
 	}
 

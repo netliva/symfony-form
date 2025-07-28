@@ -9,7 +9,7 @@ class FormThemePass implements CompilerPassInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function process(ContainerBuilder $container)
+	public function process(ContainerBuilder $container): void
 	{
 		$resources = $container->getParameter('twig.form.resources');
 

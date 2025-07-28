@@ -20,69 +20,58 @@ class EntityToIdTransformer implements DataTransformerInterface
 		$this->entityInfo = $entityInfo;
 	}
 
-	/**
-	 * Transforms an object (entity) to a string (number).
-	 *
-	 * @param  Object|null $entity
-	 * @return string
-	 */
-	public function transform($entity)
-	{
-		if (null === $entity)
+
+	public function transform(mixed $value): object|string
+    {
+		if (null === $value)
 		{
 			return '';
 		}
 
-		if ($entity instanceof ArrayCollection || $entity instanceof PersistentCollection)
+		if ($value instanceof ArrayCollection || $value instanceof PersistentCollection)
 		{
 			$collection = [];
-			foreach ($entity as $item)
+			foreach ($value as $item)
 			{
-				$value = [];
+				$tempVal = [];
 				foreach ($this->entityInfo['value'] as $val_key)
 				{
-					$value[] = $item->{'get'.ucfirst($val_key)}();
+					$tempVal[] = $item->{'get'.ucfirst($val_key)}();
 				}
 				$collection[] = [
 					"matchedKey" => "value",
 					"key"   => $item->{'get'.ucfirst($this->entityInfo['key'])}(),
-					"value" => implode(" - ", $value),
+					"value" => implode(" - ", $tempVal),
 				];
 			}
 
 			return json_encode($collection);
 		}
 
-		return is_object($entity) ? $entity->{'get'.ucfirst($this->entityInfo['key'])}() : $entity ;
+		return is_object($value) ? $value->{'get'.ucfirst($this->entityInfo['key'])}() : $value ;
 	}
 
-	private function isJson($string) {
-		json_decode($string);
-		return (json_last_error() == JSON_ERROR_NONE && !is_numeric($string));
+	private function isJson($string): bool
+    {
+        return (json_validate($string) && !is_numeric($string));
 	}
 
-	/**
-	 * Transforms a string (number) to an object (issue).
-	 *
-	 * @param  string $issueNumber
-	 * @return Object|null
-	 * @throws TransformationFailedException if object (issue) is not found.
-	 */
-	public function reverseTransform($id)
-	{
+
+	public function reverseTransform(mixed $value): ?object
+    {
 		// no issue number? It's optional, so that's ok
-		if (!$id || (is_array($id) and !count($id)))
+		if (!$value || (is_array($value) and !count($value)))
 		{
 			return null;
 		}
 
-		if ($this->isJson($id))
+		if ($this->isJson($value))
 		{
 			$ids = [];
 			// dump($id);
-			foreach (json_decode($id) as $value)
+			foreach (json_decode($value) as $val)
 			{
-				$ids[] = $value->key;
+				$ids[] = $val->key;
 			}
 
 			if (!count($ids)) return null;
@@ -94,12 +83,12 @@ class EntityToIdTransformer implements DataTransformerInterface
 		else
 		{
 			$entity = $this->manager->getRepository($this->entityInfo['class'])// query for the issue with this id
-			->findOneBy([$this->entityInfo['key']=>$id]);
+			->findOneBy([$this->entityInfo['key']=>$value]);
 		}
 
 		if (null === $entity)
 		{
-			throw new TransformationFailedException(sprintf('An issue with number "%s" does not exist!', $id));
+			throw new TransformationFailedException(sprintf('An issue with number "%s" does not exist!', $value));
 		}
 
 		return $entity;
