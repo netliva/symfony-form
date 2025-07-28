@@ -24,12 +24,12 @@ class NetlivaContactType extends AbstractType
         $this->container= $container;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array());
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'netliva_contact';
     }
@@ -39,7 +39,7 @@ class NetlivaContactType extends AbstractType
         return FormType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $contactOpts = $this->container->getParameter('netliva_form.contact_options');
 

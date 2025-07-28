@@ -23,14 +23,14 @@ class NetlivaCustomFieldsType extends AbstractType
         $this->ncfe = $ncfe;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
 		   'fields'       => [],
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'netliva_customfield';
     }
@@ -40,7 +40,7 @@ class NetlivaCustomFieldsType extends AbstractType
         return FormType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		uasort($options["fields"], function($a, $b) {
 			return (key_exists("order", $a) ? $a['order'] : 0) <=> (key_exists("order", $b) ? $b['order'] : 0);

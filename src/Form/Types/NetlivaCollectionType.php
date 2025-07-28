@@ -12,13 +12,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class NetlivaCollectionType extends AbstractType
 {
 
-	public function buildView (FormView $view, FormInterface $form, array $options)
+	public function buildView (FormView $view, FormInterface $form, array $options): void
 	{
 		$view->vars['prototype_name'] = $options['prototype_name'];
 		$view->vars['js_settings'] = json_encode($options['js_settings']);
 	}
 
-	public function configureOptions (OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'js_settings'	=> [],
@@ -36,7 +36,7 @@ class NetlivaCollectionType extends AbstractType
 		return 'collection_type';
 	}
 
-	public function getParent ()
+	public function getParent(): string
 	{
 		return CollectionType::class;
 	}

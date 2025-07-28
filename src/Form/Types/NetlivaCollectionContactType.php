@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NetlivaCollectionContactType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
 			'allow_extra_fields' => true,
@@ -21,7 +21,7 @@ class NetlivaCollectionContactType extends AbstractType
 		));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'netliva_collection_contact';
     }

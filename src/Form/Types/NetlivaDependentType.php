@@ -33,12 +33,12 @@ class NetlivaDependentType extends AbstractType
 		return 'netliva_dependent';
 	}
 
-	public function getParent ()
+	public function getParent(): string
 	{
 		return TextType::class;
 	}
 
-	public function buildForm (FormBuilderInterface $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		if ($options['transformer'])
 		{
@@ -50,7 +50,7 @@ class NetlivaDependentType extends AbstractType
 		$builder->setAttribute('depend_to', $options['depend_to']);
 	}
 
-	public function buildView (FormView $view, FormInterface $form, array $options)
+	public function buildView (FormView $view, FormInterface $form, array $options): void
 	{
 
 		$view->vars['default']      = $options['default'];
@@ -60,7 +60,7 @@ class NetlivaDependentType extends AbstractType
 
 	}
 
-	public function configureOptions (OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$emNormalizer = function(Options $options, $em) {
 			if (null !== $em)
