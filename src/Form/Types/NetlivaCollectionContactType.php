@@ -26,7 +26,7 @@ class NetlivaCollectionContactType extends AbstractType
         return 'netliva_collection_contact';
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return NetlivaCollectionType::class;
     }

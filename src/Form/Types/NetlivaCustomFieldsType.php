@@ -35,7 +35,7 @@ class NetlivaCustomFieldsType extends AbstractType
         return 'netliva_customfield';
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return FormType::class;
     }
@@ -43,7 +43,7 @@ class NetlivaCustomFieldsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		uasort($options["fields"], function($a, $b) {
-			return (key_exists("order", $a) ? $a['order'] : 0) <=> (key_exists("order", $b) ? $b['order'] : 0);
+			return (array_key_exists("order", $a) ? $a['order'] : 0) <=> (array_key_exists("order", $b) ? $b['order'] : 0);
 		});
 
 		foreach ($options["fields"] as $key => $field)

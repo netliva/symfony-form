@@ -1,5 +1,6 @@
 <?php
 namespace Netliva\SymfonyFormBundle\Controller;
+use Doctrine\Persistence\ManagerRegistry;
 use Netliva\SymfonyFormBundle\Events\AutoCompleteValueChanger;
 use Netliva\SymfonyFormBundle\Events\NetlivaSymfonyFormEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,18 +11,22 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class AjaxAutocompleteController extends AbstractController
 {
 
-	public function getJSONAction(Request $request, $entity_alias)
+    public function __construct (
+        private readonly ManagerRegistry $managerRegistry,
+    ) { }
+
+    public function getJSONAction(Request $request, $entity_alias)
 	{
 		$letters = $request->request->get("letters");
 		$conf_key = $request->request->get("key");
 		$extras = $request->request->get("extras");
 
-        $entities = $this->get('service_container')->getParameter('netliva_form.autocomplete_entities');
+        $entities = $this->getParameter('netliva_form.autocomplete_entities');
 		$configs = $entities[$entity_alias][$conf_key];
 
-		$em = $this->get('doctrine')->getManager($configs["em"]);
+		$em = $this->managerRegistry->getManager($configs["em"]);
 		if ($configs['role'] !== 'IS_AUTHENTICATED_ANONYMOUSLY'){
-			if (false === $this->get('security.token_storage')->isGranted( $configs['role'] )) {
+			if (false === $this->isGranted( $configs['role'] )) {
 				throw new AccessDeniedException();
 			}
 		}
@@ -46,11 +51,11 @@ class AjaxAutocompleteController extends AbstractController
 		if (is_array($configs['filters']) && count($configs['filters']))
 			$and_where = $configs['filters'];
 
-		if (is_array($extras) && key_exists('activeFilter', $extras) and is_array($extras['activeFilter']))
+		if (is_array($extras) && array_key_exists('activeFilter', $extras) and is_array($extras['activeFilter']))
 			$and_where = array_merge($and_where, $extras['activeFilter']);
 
 		$join_dql = '';
-		if (key_exists('join', $configs) && $configs['join'])
+		if (array_key_exists('join', $configs) && $configs['join'])
 		{
 			$table_name = 'a';
 			foreach ($configs['join'] as $join)
@@ -97,14 +102,14 @@ class AjaxAutocompleteController extends AbstractController
 
 	public function callBackAction($id, $entity_alias)
 	{
-		$entities = $this->get('service_container')->getParameter('netliva_form.autocomplete_entities');
+		$entities = $this->getParameter('netliva_form.autocomplete_entities');
 		$entity_inf = $entities[$entity_alias];
 		$res = array();
 		if (count($entity_inf) == 1)
 		{
             $conf_key = array_key_first($entity_inf);
             $configs = $entity_inf[$conf_key];
-            $em = $this->get('doctrine')->getManager($configs["em"]);
+            $em = $this->managerRegistry->getManager($configs["em"]);
 
             $select = $this->addPrefix($configs['key']) . " " . $this->alias($configs['key']);
             foreach ($configs['value'] as $key => $property)
@@ -118,7 +123,7 @@ class AjaxAutocompleteController extends AbstractController
 
 
             $join_dql = '';
-            if (key_exists('join', $configs) && $configs['join'])
+            if (array_key_exists('join', $configs) && $configs['join'])
             {
                 $table_name = 'a';
                 foreach ($configs['join'] as $join)
@@ -186,19 +191,11 @@ class AjaxAutocompleteController extends AbstractController
 		return call_user_func_array('sprintf', array_merge((array)$format, $arr));
 	}
 
-	/**
-	 * @param string $select
-	 * @param array  $where_clause
-	 * @param array  $like
-	 * @param        $properties
-	 * @param        $configs
-	 * @param        $letters
-	 */
-	protected function prepareParts (string &$select, array &$where_clause, array &$like, $properties, $configs, $letters, &$order = null): void
+	protected function prepareParts (string &$select, array &$where_clause, array &$like, array $properties, array $configs, string $letters, &$order = null): void
 	{
-		foreach ($properties as $key => $property)
+		foreach ($properties as $key1 => $property)
 		{
-			$withPro = $this->addPrefix($property, $key);
+			$withPro = $this->addPrefix($property, $key1);
 			$param   = $this->clearPrefix($property).'_like';
 
 			if ($this->alias($configs['key']) != $this->alias($property))
@@ -256,7 +253,7 @@ class AjaxAutocompleteController extends AbstractController
 						$say++;
 					}
 
-					$glue = substr($configs['search'], -2 ) == 'or' ? " OR " : " AND ";
+					$glue = str_ends_with($configs['search'], 'or') ? " OR " : " AND ";
 
 					$where_clause[] = "(".implode($glue, $where_sub_clause).")";
 					break;

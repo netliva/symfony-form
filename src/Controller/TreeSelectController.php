@@ -1,29 +1,32 @@
 <?php
 namespace Netliva\SymfonyFormBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TreeSelectController extends AbstractController
 {
 
-	public function getOptionsAction(Request $req, $entity_alias, $val)
+    public function __construct (
+        private readonly EntityManagerInterface $entityManager,
+    ) { }
+
+    public function getOptionsAction(Request $req, $entity_alias, $val)
 	{
-		$em = $this->get('doctrine')->getManager();
-		$entities = $this->get('service_container')->getParameter('netliva_form.treeselect_entities');
+		$entities = $this->getParameter('netliva_form.treeselect_entities');
 		$entity_inf = $entities[$entity_alias];
 
 		$postWhere = $req->request->get("where");
 		if (!is_array($postWhere)) $postWhere = [];
 
 		$val = $val == "null" ? null : $val;
-		$isTreeView = key_exists("where", $entity_inf);
+		$isTreeView = array_key_exists("where", $entity_inf);
 
 		if ($entity_inf['role'] !== 'IS_AUTHENTICATED_ANONYMOUSLY'){
-			if (false === $this->get('security.token_storage')->isGranted( $entity_inf['role'] )) {
+			if (false === $this->isGranted( $entity_inf['role'] )) {
 				throw new AccessDeniedException();
 			}
 		}
@@ -47,7 +50,7 @@ class TreeSelectController extends AbstractController
 			}
 		}
 		$queryText .= 'ORDER BY e.' . $entity_inf['value'];
-		$query = $em->createQuery($queryText);
+		$query = $this->entityManager->createQuery($queryText);
 
 		foreach ($postWhere as $k=>$v)
 			if ($v) $query->setParameter('val_'.$k, $v );
@@ -73,7 +76,7 @@ class TreeSelectController extends AbstractController
 		}
 		foreach ($results AS $r){
 			$res .= '<option value="'.$r[$entity_inf['key']].'"';
-			foreach ($entity_inf['other_values'] as $key => $value) $res .= ' data-'.$value.'="'.$r[$value].'"';
+			foreach ($entity_inf['other_values'] as $value) $res .= ' data-'.$value.'="'.$r[$value].'"';
 			$res .= '>'.$r[$entity_inf['value']].($entity_inf['value2']?' - '.$r[$entity_inf['value2']] :'').'</option>';
 		}
 

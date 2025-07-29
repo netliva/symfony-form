@@ -17,7 +17,7 @@ class FormErrorsService
 
 	private function _getFormErrors(FormInterface $form, $parentName)
 	{
-		foreach ($form->getErrors() as $key => $error)
+		foreach ($form->getErrors() as $error)
 		{
 			$this->errors[($parentName?$parentName."_":"").$form->getName()][] = $error->getMessage();
 		}

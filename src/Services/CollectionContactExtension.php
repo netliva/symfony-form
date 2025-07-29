@@ -25,19 +25,19 @@ class CollectionContactExtension extends AbstractExtension
 
     public function getFilters(): array {
         return array(
-            new TwigFilter('get_a_mobile_or_phone', [$this, 'getAMobileOrPhone']),
-            new TwigFilter('get_a_mobile', [$this, 'getAMobile']),
-            new TwigFilter('get_a_phone', [$this, 'getAPhone']),
-            new TwigFilter('get_a_fax', [$this, 'getAFax']),
-            new TwigFilter('get_a_mail', [$this, 'getAMail']),
+            new TwigFilter('get_a_mobile_or_phone', $this->getAMobileOrPhone(...)),
+            new TwigFilter('get_a_mobile', $this->getAMobile(...)),
+            new TwigFilter('get_a_phone', $this->getAPhone(...)),
+            new TwigFilter('get_a_fax', $this->getAFax(...)),
+            new TwigFilter('get_a_mail', $this->getAMail(...)),
 
-            new TwigFilter('get_phones', [$this, 'getPhones']),
-            new TwigFilter('get_mobiles', [$this, 'getMobiles']),
-            new TwigFilter('get_all_phones', [$this, 'getAllPhones']),
-            new TwigFilter('get_faxes', [$this, 'getFaxes']),
-            new TwigFilter('get_mails', [$this, 'getMails']),
+            new TwigFilter('get_phones', $this->getPhones(...)),
+            new TwigFilter('get_mobiles', $this->getMobiles(...)),
+            new TwigFilter('get_all_phones', $this->getAllPhones(...)),
+            new TwigFilter('get_faxes', $this->getFaxes(...)),
+            new TwigFilter('get_mails', $this->getMails(...)),
 
-            new TwigFilter('contact_list', [$this, 'getList'], ["is_safe"=>["html"]]),
+            new TwigFilter('contact_list', $this->getList(...), ["is_safe"=>["html"]]),
         );
     }
 

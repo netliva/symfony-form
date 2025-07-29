@@ -23,7 +23,7 @@ class Contact extends Constraint
 	    'mail_content_mismatch' => '{{ order }}. sıradaki iletişim bilgisinde girilen e-posta adresi geçersizdir',
 	];
 
-	public function validatedBy()
+	public function validatedBy(): string
 	{
 		return \get_class($this).'Validator';
 	}

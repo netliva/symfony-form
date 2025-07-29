@@ -5,8 +5,6 @@ namespace Netliva\SymfonyFormBundle\Services;
 use Netliva\FileTypeBundle\Form\Type\NetlivaFileType;
 use Netliva\FileTypeBundle\Service\UploadHelperService;
 use Netliva\SymfonyFormBundle\Form\Types\NetlivaDatePickerType;
-use Netliva\TwigBundle\Twig\Extension\NetlivaExtension;
-use Netliva\TwigBundle\Twig\Extension\SortByFieldExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -18,22 +16,22 @@ use Twig\TwigFilter;
 
 class NetlivaCustomFieldsExtension extends AbstractExtension
 {
-	private $container, $uploadHelperService;
-	public function __construct (ContainerInterface $container, UploadHelperService $uploadHelperService)
-	{
-		$this->container = $container;
-		$this->uploadHelperService = $uploadHelperService;
-	}
+	public function __construct (
+        private readonly ContainerInterface $container,
+        private readonly UploadHelperService $uploadHelperService
+    )
+	{}
 
-	public function getName() {
+	public function getName(): string
+    {
         return 'netliva_customfields_filters';
     }
 
     public function getFilters(): array {
         return array(
-            new TwigFilter('fetch_fields', [$this, 'fetchFields'] , ['is_safe' => ['html']]),
-            new TwigFilter('get_value', [$this, 'getValue'] , ['is_safe' => ['html']]),
-            new TwigFilter('option_key_val', [$this, 'optionKeyVal'] , ['is_safe' => ['html']]),
+            new TwigFilter('fetch_fields', $this->fetchFields(...) , ['is_safe' => ['html']]),
+            new TwigFilter('get_value', $this->getValue(...) , ['is_safe' => ['html']]),
+            new TwigFilter('option_key_val', $this->optionKeyVal(...) , ['is_safe' => ['html']]),
         );
     }
 
@@ -59,12 +57,12 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 
     public function getValue($values, $field_info, $fieldKey)
 	{
-        if (is_array($values) && key_exists($fieldKey, $values) && !is_null($values[$fieldKey]))
+        if (is_array($values) && array_key_exists($fieldKey, $values) && !is_null($values[$fieldKey]))
 		{
 			if ($field_info["type"] == "date" or $field_info["type"] == "datetime")
 			{
 				if ( $values[$fieldKey] instanceof \DateTime)  $date_temp = $values[$fieldKey]["date"];
-				else if (is_array($values[$fieldKey]) and key_exists('date', $values[$fieldKey]))  $date_temp = new \DateTime($values[$fieldKey]["date"]);
+				else if (is_array($values[$fieldKey]) and array_key_exists('date', $values[$fieldKey]))  $date_temp = new \DateTime($values[$fieldKey]["date"]);
 				else $date_temp = new \DateTime($values[$fieldKey]);
 
 				return $this->dateFormat($date_temp, $field_info["type"] == "datetime");
@@ -87,17 +85,17 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 					foreach ($values[$fieldKey] as $value)
 					{
 						if ($returnVal) $returnVal .= ", ";
-						$returnVal .= key_exists($value, $options) ? $options[$value] : $value;
+						$returnVal .= array_key_exists($value, $options) ? $options[$value] : $value;
 					}
 					return $returnVal;
 				}
-				return key_exists($values[$fieldKey], $options) ? $options[$values[$fieldKey]] : $values[$fieldKey];
+				return array_key_exists($values[$fieldKey], $options) ? $options[$values[$fieldKey]] : $values[$fieldKey];
 			}
 
 			if (is_array($values[$fieldKey]))
 				return implode(", ", $values[$fieldKey]);
 
-			return  $values[$fieldKey] . ((key_exists("suffix", $field_info) and $field_info["suffix"]) ? " ".$field_info["suffix"] : "");
+			return  $values[$fieldKey] . ((array_key_exists("suffix", $field_info) and $field_info["suffix"]) ? " ".$field_info["suffix"] : "");
 		}
 
 		return null;
@@ -106,7 +104,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
     public function fetchFields($values, $fields)
 	{
 		$html = '';
-		if (is_array($fields) and key_exists("fields",$fields) and count($fields["fields"]))
+		if (is_array($fields) and array_key_exists("fields",$fields) and count($fields["fields"]))
 		{
 			foreach ($this->sortByFieldFilter($fields["fields"], 'order') as $field_key => $field_info)
 			{
@@ -131,7 +129,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 		} elseif (count($content) < 1) {
 			return $content;
 		} elseif ($sort_by === null) {
-			throw new Exception('No sort by parameter passed to the sortByField filter');
+			throw new \Exception('No sort by parameter passed to the sortByField filter');
 		} else {
 			// Unfortunately have to suppress warnings here due to __get function
 			// causing usort to think that the array has been modified:
@@ -140,7 +138,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 				$flip = ($direction === 'desc') ? -1 : 1;
 
 				$a_sort_value = null;
-				if (is_array($a) && key_exists($sort_by, $a))
+				if (is_array($a) && array_key_exists($sort_by, $a))
 					$a_sort_value = $a[$sort_by];
 				else if (is_object($a) && method_exists($a, 'get' . ucfirst($sort_by)))
 					$a_sort_value = $a->{'get' . ucfirst($sort_by)}();
@@ -148,7 +146,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
 					$a_sort_value = $a->$sort_by;
 
 				$b_sort_value = null;
-				if (is_array($b) && key_exists($sort_by, $b))
+				if (is_array($b) && array_key_exists($sort_by, $b))
 					$b_sort_value = $b[$sort_by];
 				else if (is_object($b) && method_exists($b, 'get' . ucfirst($sort_by)))
 					$b_sort_value = $b->{'get' . ucfirst($sort_by)}();
@@ -204,7 +202,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
         elseif ($field['type'] == 'text')
         {
             $fieldOptions['attr'] = [];
-            if (key_exists("inputType", $field))
+            if (array_key_exists("inputType", $field))
             {
                 if ($field["inputType"] == "number")
                     $fieldOptions['attr']['ncf-touch-spin'] = 'prepare';
@@ -212,7 +210,7 @@ class NetlivaCustomFieldsExtension extends AbstractExtension
                     $fieldOptions['attr']['ncf-mask-'.$field["inputType"]] = 'prepare';
             }
 
-            if (key_exists("suffix", $field) && $field["suffix"])
+            if (array_key_exists("suffix", $field) && $field["suffix"])
                 $fieldOptions['attr']['ncf-suffix'] = $field["suffix"];
         }
 

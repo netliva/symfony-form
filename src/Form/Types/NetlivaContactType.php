@@ -16,12 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NetlivaContactType extends AbstractType
 {
-    private $container;
-    private $registry;
-    public function __construct (ContainerInterface $container, ManagerRegistry $registry)
+    public function __construct (private readonly ContainerInterface $container)
     {
-        $this->registry = $registry;
-        $this->container= $container;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -34,7 +30,7 @@ class NetlivaContactType extends AbstractType
         return 'netliva_contact';
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return FormType::class;
     }

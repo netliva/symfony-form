@@ -36,13 +36,13 @@ class ContactValidator extends ConstraintValidator
 				break;
 			}
 
-			if (!key_exists('type', $cValue))
+			if (!array_key_exists('type', $cValue))
 			{
 				$this->context->buildViolation($constraint->message['type_not_found'])->setParameter('{{ order }}', $order)->addViolation();
 				break;
 			}
 
-			if (!key_exists('content', $cValue))
+			if (!array_key_exists('content', $cValue))
 			{
 				$this->context->buildViolation($constraint->message['not_found_content'])->setParameter('{{ order }}', $order)->addViolation();
 				break;
