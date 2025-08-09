@@ -4,6 +4,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Netliva\SymfonyFormBundle\Events\AutoCompleteValueChanger;
 use Netliva\SymfonyFormBundle\Events\NetlivaSymfonyFormEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -13,6 +14,7 @@ class AjaxAutocompleteController extends AbstractController
 
     public function __construct (
         private readonly ManagerRegistry $managerRegistry,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) { }
 
     public function getJSONAction(Request $request, $entity_alias)
@@ -89,9 +91,8 @@ class AjaxAutocompleteController extends AbstractController
 			foreach ($configs['other_values'] as $key => $value)
 				$temp[$this->alias($value, $key)] = $r[$this->alias($value, $key)];
 
-            $eventDispatcher = $this->container->get('event_dispatcher');
             $event = new AutoCompleteValueChanger($entity_alias, $conf_key, $temp);
-            $eventDispatcher->dispatch($event, NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER);
+            $this->eventDispatcher->dispatch($event, NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER);
 
 			$res[$temp["key"]] = $event->getData();
 		}
@@ -151,9 +152,8 @@ class AjaxAutocompleteController extends AbstractController
                 foreach ($configs['other_values'] as $key => $value)
                     $res[$this->alias($value, $key)] = $results[$this->alias($value, $key)];
 
-                $eventDispatcher = $this->container->get('event_dispatcher');
                 $event = new AutoCompleteValueChanger($entity_alias, $conf_key, $res);
-                $eventDispatcher->dispatch($event, NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER);
+                $this->eventDispatcher->dispatch($event, NetlivaSymfonyFormEvents::AUTO_COMPLETE_DATA_CHANGER);
 
                 $res = $event->getData();
             }

@@ -4,6 +4,19 @@ services:
         autoconfigure: true
         public: false
 
+    # Controllers
+    Netliva\SymfonyFormBundle\Controller\AjaxAutocompleteController:
+        autowire: true
+        tags: ['controller.service_arguments']
+
+    Netliva\SymfonyFormBundle\Controller\DependentController:
+        autowire: true
+        tags: ['controller.service_arguments']
+
+    Netliva\SymfonyFormBundle\Controller\TreeSelectController:
+        autowire: true
+        tags: ['controller.service_arguments']
+
     Netliva\SymfonyFormBundle\Services\FormErrorsService:
         class: Netliva\SymfonyFormBundle\Services\FormErrorsService
         public: false
