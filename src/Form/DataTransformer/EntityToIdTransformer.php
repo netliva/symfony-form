@@ -57,7 +57,7 @@ class EntityToIdTransformer implements DataTransformerInterface
 	}
 
 
-	public function reverseTransform(mixed $value): ?object
+	public function reverseTransform(mixed $value): mixed
     {
 		// no issue number? It's optional, so that's ok
 		if (!$value || (is_array($value) and !count($value)))
