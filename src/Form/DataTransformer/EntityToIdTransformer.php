@@ -13,11 +13,13 @@ class EntityToIdTransformer implements DataTransformerInterface
 {
 	private $manager;
 	private $entityInfo;
+	private $isMultSelection;
 
-	public function __construct(EntityManagerInterface $manager, $entityInfo)
+	public function __construct(EntityManagerInterface $manager, $entityInfo, $isMultSelection = false)
 	{
 		$this->manager    = $manager;
 		$this->entityInfo = $entityInfo;
+		$this->isMultSelection = $isMultSelection;
 	}
 
 
@@ -62,7 +64,7 @@ class EntityToIdTransformer implements DataTransformerInterface
 		// no issue number? It's optional, so that's ok
 		if (!$value || (is_array($value) and !count($value)))
 		{
-			return null;
+			return $this->isMultSelection ? [] : null;
 		}
 
 		if ($this->isJson($value))
@@ -74,7 +76,7 @@ class EntityToIdTransformer implements DataTransformerInterface
 				$ids[] = $val->key;
 			}
 
-			if (!count($ids)) return null;
+            if (!count($ids)) return $this->isMultSelection ? [] : null;
 
 			$qb = $this->manager->getRepository($this->entityInfo['class'])->createQueryBuilder("e");
 			$qb->where($qb->expr()->in("e.".$this->entityInfo['key'], $ids));
