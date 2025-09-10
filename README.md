@@ -77,15 +77,16 @@ Form Type Kullanımı
 ----------------------------
 
 - [Ajax Submit](docs/ajax_submit.md)
-- [Autocomplete](docs/autocomplete.md) (Kullanma Klavuzu Hazırlanacak)
+- [Autocomplete](docs/autocomplete.md)
 - [Collection](docs/collection.md) 
-- [Collection Contact](docs/collection_contact.md) (Kullanma Klavuzu Hazırlanacak)
+- [Collection Contact](docs/collection_contact.md)
 - [Tags Input](docs/tags_input.md)
-- [Color Picker](docs/color_picker.md) (Kullanma Klavuzu Hazırlanacak)
-- [Custom Fields](docs/custom_fields.md) (Kullanma Klavuzu Hazırlanacak)
+- [Color Picker](docs/color_picker.md)
+- [Custom Fields](docs/custom_fields.md)
 - [Dependent Entity](docs/dependent_entity.md)
-- [Date Picker](docs/date_picker.md) (Kullanma Klavuzu Hazırlanacak)
-- [Icon Type](docs/icon_type.md) (Kullanma Klavuzu Hazırlanacak)
-- [Numeric Spin](docs/numeric_spin.md) (Kullanma Klavuzu Hazırlanacak)
-- [Tree Select](docs/date_picker.md) (Kullanma Klavuzu Hazırlanacak)
+- [Date Picker](docs/date_picker.md)
+- [Icon Type](docs/icon_type.md)
+- [Numeric Spin](docs/numeric_spin.md)
+- [Suggestive Text](docs/suggestive_text.md) - Hibrit autocomplete form tipi
+- [Tree Select](docs/tree_select.md)
 

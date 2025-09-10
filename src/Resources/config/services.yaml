@@ -45,6 +45,11 @@ services:
         autowire: true
         tags: ['form.type']
 
+    Netliva\SymfonyFormBundle\Form\Types\NetlivaSuggestiveTextType:
+        autowire: true
+        tags:
+            - { name: 'form.type' }
+
     Netliva\SymfonyFormBundle\Form\Types\NetlivaAutocompleteType:
         autowire: true
 

@@ -460,4 +460,28 @@
 	</div>
 
 {% endblock %}
+{%- block netliva_suggestive_text_widget -%}
+	<div class="netliva-suggestive-text typeahead__container">
+		<div class="typeahead__field">
+			<div class="typeahead__query">
+				{{ form_widget(form, {
+					'attr': {
+						'netliva_suggestive_text_widget': '',
+						'data-config': {
+							'suggestions': suggestions,
+							'entity_class': entity_class,
+							'field_name': field_name,
+							'entity_manager': entity_manager,
+							'min_length': min_length,
+							'max_suggestions': max_suggestions,
+							'allow_new_values': allow_new_values,
+							'placeholder': placeholder,
+							'no_results_text': no_results_text
+						}|json_encode
+					}
+				}) }}
+			</div>
+		</div>
+	</div>
+{%- endblock -%}
 
