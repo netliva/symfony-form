@@ -1,5 +1,6 @@
 {
 	"name": "netliva/symfony-form",
+	"version": "1.2.3",
 	"license": "MIT",
 	"type": "symfony-bundle",
 	"description": "Netliva Symfony Form Bundle",
