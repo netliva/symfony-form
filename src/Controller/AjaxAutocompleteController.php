@@ -21,7 +21,7 @@ class AjaxAutocompleteController extends AbstractController
 	{
 		$letters = $request->request->get("letters");
 		$conf_key = $request->request->get("key");
-		$extras = $request->request->get("extras");
+        $extras = $request->request->all()["extras"]??[];
 
         $entities = $this->getParameter('netliva_form.autocomplete_entities');
 		$configs = $entities[$entity_alias][$conf_key];
