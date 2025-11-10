@@ -95,7 +95,7 @@ class NetlivaDependentType extends AbstractType
 
 		$resolver->setNormalizer('em', $emNormalizer);
 		$resolver->setRequired(['depend_to', 'entity_alias']);
-		$resolver->setAllowedTypes('em', ['null', 'string', 'Doctrine\Common\Persistence\ObjectManager']);
+		$resolver->setAllowedTypes('em', ['null', 'string', ObjectManager::class]);
 
 	}
 
