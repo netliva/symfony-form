@@ -119,10 +119,13 @@ class NetlivaTreeSelectType extends AbstractType
 						if ($options["doctrine_type"] == "text")
 							return $data;
 
-						$data = json_decode($data);
+						$decoded = json_decode($data, true);
+						if (json_last_error() !== JSON_ERROR_NONE) {
+							$decoded = $data ? [$data] : [];
+						}
+						$data = $decoded;
 
-						if ($options["doctrine_type"] == "json_array") return $data;
-
+						if ($options["doctrine_type"] == "json_array") return is_array($data) ? $data : (is_null($data) ? null : [$data]);
 						if ($options["doctrine_type"] == "relation")
 						{
 							$dbData = new ArrayCollection();
